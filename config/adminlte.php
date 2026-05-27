@@ -301,30 +301,33 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'text'    => 'Paquete 1: primeros',
+            'text'    => 'Ciclo 1',
             'icon'    => 'fas fa-fw fa-shield-alt',
             'classes' => 'bg-dark text-white',
             'submenu' => [
+                                
                 [
                     
-                    'text'    => 'Configuración',
-                    'url'     => 'admin/configuracion',
-                    'icon'    => 'fas fa-fw fa-cog',
-                    'classes' => 'bg-blue text-white',
-                ],
-                [
-                    'text'    => 'CU4 · Cambiar Contraseña',
-                    'url'     => 'admin/password/change',
-                    'icon'    => 'fas fa-fw fa-key',
-                    'classes' => 'bg-blue text-white',
-                ],
-                [
-                    
-                    'text'    => 'CU5 · Gestionar Roles y Permisos',
-                    'url'     => 'admin/roles',
+                    'text'    => 'Carreras',
+                    'url'     => 'admin/carreras',
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    
+                    'text'    => 'Gestiones',
+                    'url'     => 'admin/gestiones',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
+                [
+                    
+                    'text'    => 'Grupos',
+                    'url'     => 'admin/grupos',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
+
 
             ],
         ],  
@@ -411,7 +414,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Carrera;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CarreraController extends Controller
 {
@@ -13,6 +14,8 @@ class CarreraController extends Controller
     public function index()
     {
         //
+        $carreras = Carrera::all();
+        return view('admin.carreras.index', compact('carreras'));
     }
 
     /**
@@ -28,7 +31,24 @@ class CarreraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $request->validate([
+        'nombre_create' => 'required|max:255',
+        'codigo_create' => 'required|max:50|unique:carreras,codigo',
+        'estado_create' => 'required',
+        ]);
+
+        $carrera = new Carrera();
+
+        $carrera->nombre = $request->nombre_create;
+        $carrera->codigo = $request->codigo_create;
+        $carrera->estado = $request->estado_create;
+
+        $carrera->save();
+        return redirect()->route('admin.carreras.index')
+        ->with('mensaje', 'La carrera se creó correctamente.')
+        ->with('icono', 'success');
+
+
     }
 
     /**
@@ -52,7 +72,31 @@ class CarreraController extends Controller
      */
     public function update(Request $request, Carrera $carrera)
     {
-        //
+        // Validación
+        $validate = Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'codigo' => 'required|max:50|unique:carreras,codigo,' . $carrera->id,
+            'estado' => 'required|in:activo,inactivo',
+        ]);
+
+        // Si falla la validación
+        if ($validate->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput()
+                ->with('modal_id', $carrera->id);
+        }
+
+        // Actualizar datos
+        $carrera->nombre = $request->nombre;
+        $carrera->codigo = $request->codigo;
+        $carrera->estado = $request->estado;
+
+        $carrera->save();
+        return redirect()->route('admin.carreras.index')
+        ->with('mensaje', 'La carrera se actualizó correctamente')
+        ->with('icono', 'success');
     }
 
     /**
@@ -60,6 +104,14 @@ class CarreraController extends Controller
      */
     public function destroy(Carrera $carrera)
     {
-        //
+        //$carrera = Carrera::findOrFail($id);
+
+        //$nombre = $carrera->nombre;
+
+        $carrera->delete();
+        return redirect()->route('admin.carreras.index')
+        ->with('mensaje', 'La carrera se eliminó correctamente')
+        ->with('icono', 'success');
+        
     }
 }
