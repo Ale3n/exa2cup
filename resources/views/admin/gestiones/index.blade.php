@@ -132,6 +132,7 @@
                         <thead>
                             <tr>
                                 <th>Nro</th>
+                                <th>ID real</th>
                                 <th>año</th>
                                  <th>periodo</th>
                                  <th>descripcion</th>
@@ -143,6 +144,7 @@
                             @foreach ($gestiones as $gestion)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $gestion->id }}</td>
                                     <td>{{ $gestion->año }}</td>
                                     <td>{{ $gestion->periodo }}</td>
                                     <td>{{ $gestion->descripcion }}</td>

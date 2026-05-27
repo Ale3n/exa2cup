@@ -327,6 +327,13 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    
+                    'text'    => 'Carrera-Gestiones',
+                    'url'     => 'admin/carrera-gestiones',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
 
 
             ],

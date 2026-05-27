@@ -4,16 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Grupo extends Model
+class CarreraGestion extends Model
 {
     protected $fillable = [
+        'carrera_id',
         'gestion_id',
-        'codigo',
-        'dias',
-        'modalidad',
         'cupo_maximo',
-        'inscritos',
+        'admitidos',
     ];
+
+    public function carrera()
+    {
+        return $this->belongsTo(Carrera::class);
+    }
 
     public function gestion()
     {

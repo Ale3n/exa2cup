@@ -27,7 +27,13 @@ Route::put('/admin/gestiones/{gestion}', [App\Http\Controllers\GestionController
 Route::delete('/admin/gestiones/{gestion}', [App\Http\Controllers\GestionController::class, 'destroy'])->name('admin.gestiones.destroy');//->middleware('auth','can:admin.gestiones.destroy');//
 
 //estar parte es para los grupos
-Route::get('/admin/grupos', [App\Http\Controllers\GrupoController::class, 'index'])->name('admin.grupos.index');//->middleware('auth','can:admin.grupos.index');
-Route::post('/admin/grupos/create', [App\Http\Controllers\GrupoController::class, 'store'])->name('admin.grupos.create');//->middleware('auth','can:admin.grupos.create');//Create
-Route::put('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'update'])->name('admin.grupos.update');//->middleware('auth','can:admin.grupos.update');//Update
-Route::delete('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'destroy'])->name('admin.grupos.destroy');//->middleware('auth','can:admin.grupos.destroy');//
+Route::get('/admin/grupos', [App\Http\Controllers\GrupoController::class, 'index'])->name('admin.grupos.index');
+Route::post('/admin/grupos/create', [App\Http\Controllers\GrupoController::class, 'store'])->name('admin.grupos.create');
+Route::put('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'update'])->name('admin.grupos.update');
+Route::delete('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'destroy'])->name('admin.grupos.destroy');
+
+//estar parte es para las carreras gestiones
+Route::get('/admin/carrera-gestiones', [App\Http\Controllers\CarreraGestionController::class, 'index'])->name('admin.carrera-gestiones.index');
+Route::post('/admin/carrera-gestiones/create', [App\Http\Controllers\CarreraGestionController::class, 'store'])->name('admin.carrera-gestiones.create');
+Route::put('/admin/carrera-gestiones/{carreraGestion}', [App\Http\Controllers\CarreraGestionController::class, 'update'])->name('admin.carrera-gestiones.update');
+Route::delete('/admin/carrera-gestiones/{carreraGestion}', [App\Http\Controllers\CarreraGestionController::class, 'destroy'])->name('admin.carrera-gestiones.destroy');

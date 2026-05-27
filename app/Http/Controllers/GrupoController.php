@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Grupo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Gestion;
 
 class GrupoController extends Controller
 {
@@ -12,8 +14,10 @@ class GrupoController extends Controller
      */
     public function index()
     {
-        $grupos = Grupo::all();
-        return view('admin.grupos.index', compact('grupos'));
+        $grupos = Grupo::with('gestion')->get();
+        $gestiones = Gestion::all();
+
+        return view('admin.grupos.index', compact('grupos', 'gestiones'));
     }
 
     /**
@@ -29,7 +33,37 @@ class GrupoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(), [
+        'gestion_id'  => 'required|exists:gestions,id',
+        'codigo'      => 'required|string|max:10|unique:grupos,codigo',
+        'dias'        => 'nullable|string|max:20',
+        'modalidad'   => 'required|in:presencial,virtual',
+        'cupo_maximo' => 'required|integer|min:1|max:70',
+        'inscritos'   => 'nullable|integer|min:0',
+        ]);
+
+        if ($validate->fails()) {
+
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        $grupo = new Grupo();
+
+        $grupo->gestion_id  = $request->gestion_id;
+        $grupo->codigo      = $request->codigo;
+        $grupo->dias        = $request->dias;
+        $grupo->modalidad   = $request->modalidad;
+        $grupo->cupo_maximo = $request->cupo_maximo;
+        $grupo->inscritos   = $request->inscritos ?? 0;
+
+        $grupo->save();
+
+        return redirect()->route('admin.grupos.index')
+            ->with('mensaje', 'El grupo se creó correctamente.')
+            ->with('icono', 'success');
     }
 
     /**
@@ -53,7 +87,32 @@ class GrupoController extends Controller
      */
     public function update(Request $request, Grupo $grupo)
     {
-        //
+            $validate = Validator::make($request->all(), [
+            'gestion_id'  => 'required|exists:gestions,id',
+            'codigo'      => 'required|string|max:10|unique:grupos,codigo,' . $grupo->id,
+            'dias'        => 'required|string|max:20',
+            'modalidad'   => 'required|in:presencial,virtual',
+            'cupo_maximo' => 'required|integer|min:1|max:70',
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput()
+                ->with('modal_id', $grupo->id);
+        }
+
+        $grupo->gestion_id  = $request->gestion_id;
+        $grupo->codigo      = $request->codigo;
+        $grupo->dias        = $request->dias;
+        $grupo->modalidad   = $request->modalidad;
+        $grupo->cupo_maximo = $request->cupo_maximo;
+        $grupo->save();
+
+        return redirect()->route('admin.grupos.index')
+            ->with('mensaje', 'El grupo se actualizó correctamente')
+            ->with('icono', 'success');
     }
 
     /**
@@ -61,6 +120,19 @@ class GrupoController extends Controller
      */
     public function destroy(Grupo $grupo)
     {
-        //
+        if ($grupo->inscritos > 0) {//Simple y directo. Primero verifica que el grupo no tenga inscritos antes de 
+                                    //eliminar, si tiene lanza el error de vuelta. Si no tiene, elimina y redirige 
+                                    //con el mensaje de éxito igual que tu update de gestiones.
+        return redirect()
+            ->back()
+            ->with('mensaje', 'No se puede eliminar el grupo porque tiene postulantes inscritos.')
+            ->with('icono', 'error');
+        }
+
+        $grupo->delete();
+
+        return redirect()->route('admin.grupos.index')
+            ->with('mensaje', 'El grupo se eliminó correctamente.')
+            ->with('icono', 'success');
     }
 }
