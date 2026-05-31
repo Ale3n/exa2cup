@@ -32,7 +32,7 @@ Route::post('/admin/grupos/create', [App\Http\Controllers\GrupoController::class
 Route::put('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'update'])->name('admin.grupos.update');
 Route::delete('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'destroy'])->name('admin.grupos.destroy');
 
-//estar parte es para las carreras gestiones
+//estar parte es para las carreras gestionesh
 Route::get('/admin/carrera-gestiones', [App\Http\Controllers\CarreraGestionController::class, 'index'])->name('admin.carrera-gestiones.index');
 Route::post('/admin/carrera-gestiones/create', [App\Http\Controllers\CarreraGestionController::class, 'store'])->name('admin.carrera-gestiones.create');
 Route::put('/admin/carrera-gestiones/{carreraGestion}', [App\Http\Controllers\CarreraGestionController::class, 'update'])->name('admin.carrera-gestiones.update');
