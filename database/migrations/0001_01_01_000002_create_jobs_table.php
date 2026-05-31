@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('attempts');
             $table->unsignedInteger('reserved_at')->nullable();
             $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
+            $table->unsignedInteger('created_at');//migraciones
         });
 
         Schema::create('job_batches', function (Blueprint $table) {

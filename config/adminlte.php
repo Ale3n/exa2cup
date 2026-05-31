@@ -334,7 +334,7 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
-
+                //tomar en cuenta
 
             ],
         ],  

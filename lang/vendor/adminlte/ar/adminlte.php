@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'full_name' => 'الاسم الثلاثي',
+    'full_name' => 'الاسم الثلاثي',//en arabe
     'email' => 'البريد الإلكتروني',
     'password' => 'كلمة السر',
     'retype_password' => 'أعد إدخال كلمة السر',
