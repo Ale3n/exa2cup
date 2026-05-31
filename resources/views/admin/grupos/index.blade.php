@@ -173,35 +173,6 @@
                                                 </div>
 
 
-                                                <!-- Cupo máximo -->
-                                                <div class="form-group">
-
-                                                    <label>Cupo máximo</label><b> (*)</b>
-
-                                                    <div class="input-group mb-3">
-
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-users"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input type="number"
-                                                            class="form-control"
-                                                            name="cupo_maximo"
-                                                            value="{{ old('cupo_maximo') }}"
-                                                            placeholder="Ingrese el cupo máximo"
-                                                            required>
-
-                                                    </div>
-
-                                                    @error('cupo_maximo')
-                                                        <small style="color:red;">{{ $message }}</small>
-                                                    @enderror
-
-                                                </div>
-
-
                                                 <!-- Inscritos -->
                                                 <div class="form-group">
 
@@ -270,7 +241,6 @@
                                 <th>Código</th>
                                 <th>Días</th>
                                 <th>Modalidad</th>
-                                <th>Cupo máximo</th>
                                 <th>Inscritos</th>
                                 <th>Acciones</th>
                             </tr>
@@ -287,7 +257,6 @@
                                     <td>{{ $grupo->codigo }}</td>
                                     <td>{{ $grupo->dias }}</td>
                                     <td>{{ $grupo->modalidad }}</td>
-                                    <td>{{ $grupo->cupo_maximo }}</td>
                                     <td>{{ $grupo->inscritos }}</td>
                                     <td>
 
@@ -298,8 +267,8 @@
                                             </button>
 
 
-                                            <form action="{{ url('/admin/gestiones/' . $gestion->id) }}" method="post"
-                                                id="miFormulario{{ $gestion->id }}">
+                                            <form action="{{ url('/admin/grupos/' . $grupo->id) }}" method="post"
+                                                id="miFormulario{{ $grupo->id }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
@@ -497,35 +466,6 @@
                                                             </div>
 
                                                             @error('modalidad')
-                                                                <small style="color:red;">{{ $message }}</small>
-                                                            @enderror
-
-                                                        </div>
-
-
-                                                        <!-- Cupo máximo -->
-                                                        <div class="form-group">
-
-                                                            <label>Cupo máximo</label><b> (*)</b>
-
-                                                            <div class="input-group mb-3">
-
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="fas fa-users"></i>
-                                                                    </span>
-                                                                </div>
-
-                                                                <input type="number"
-                                                                    class="form-control"
-                                                                    name="cupo_maximo"
-                                                                    value="{{ old('cupo_maximo', $grupo->cupo_maximo) }}"
-                                                                    placeholder="Ingrese el cupo máximo"
-                                                                    required>
-
-                                                            </div>
-
-                                                            @error('cupo_maximo')
                                                                 <small style="color:red;">{{ $message }}</small>
                                                             @enderror
 

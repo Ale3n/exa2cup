@@ -38,7 +38,6 @@ class GrupoController extends Controller
         'codigo'      => 'required|string|max:10|unique:grupos,codigo',
         'dias'        => 'nullable|string|max:20',
         'modalidad'   => 'required|in:presencial,virtual',
-        'cupo_maximo' => 'required|integer|min:1|max:70',
         'inscritos'   => 'nullable|integer|min:0',
         ]);
 
@@ -56,7 +55,7 @@ class GrupoController extends Controller
         $grupo->codigo      = $request->codigo;
         $grupo->dias        = $request->dias;
         $grupo->modalidad   = $request->modalidad;
-        $grupo->cupo_maximo = $request->cupo_maximo;
+        $grupo->cupo_maximo = 70;
         $grupo->inscritos   = $request->inscritos ?? 0;
 
         $grupo->save();
@@ -92,7 +91,6 @@ class GrupoController extends Controller
             'codigo'      => 'required|string|max:10|unique:grupos,codigo,' . $grupo->id,
             'dias'        => 'required|string|max:20',
             'modalidad'   => 'required|in:presencial,virtual',
-            'cupo_maximo' => 'required|integer|min:1|max:70',
         ]);
 
         if ($validate->fails()) {
@@ -107,7 +105,6 @@ class GrupoController extends Controller
         $grupo->codigo      = $request->codigo;
         $grupo->dias        = $request->dias;
         $grupo->modalidad   = $request->modalidad;
-        $grupo->cupo_maximo = $request->cupo_maximo;
         $grupo->save();
 
         return redirect()->route('admin.grupos.index')
