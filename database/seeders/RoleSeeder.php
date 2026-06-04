@@ -43,6 +43,15 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'admin.roles.permisos'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.roles.update_permisos'])->syncRoles($admin);
 
+        // --- PERMISOS PARA POSTULANTES CRUD---
+        Permission::firstOrCreate(['name' => 'admin.postulantes.index'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.postulantes.create'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.postulantes.store'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.postulantes.show'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.postulantes.edit'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.postulantes.update'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.postulantes.destroy'])->syncRoles($admin);
+
           // --- PERMISOS PARA ESTUDIANTES CRUD---
         //Permission::firstOrCreate(['name' => 'admin.estudiantes.index'])->syncRoles($admin);
         //Permission::firstOrCreate(['name' => 'admin.estudiantes.create'])->syncRoles($admin);

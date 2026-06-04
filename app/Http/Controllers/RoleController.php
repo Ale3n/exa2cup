@@ -48,8 +48,8 @@ class RoleController extends Controller
     {
         $rol = Role::findOrFail($id);
 
-        $allowedModules = ['carreras', 'grupos', 'gestiones', 'carrera-gestiones', 'carreragestiones'];
-        $allowedActions = ['index', 'create', 'update', 'destroy'];
+        $allowedModules = ['carreras', 'grupos', 'gestiones', 'carrera-gestiones', 'carreragestiones', 'postulantes'];
+        $allowedActions = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
 
         $permisos = Permission::all()
             ->filter(function ($permiso) use ($rol, $allowedModules, $allowedActions) {
@@ -110,6 +110,9 @@ class RoleController extends Controller
                     }
                     if ($module === 'estudiantes') {
                         return 'Estudiantes';
+                    }
+                    if ($module === 'postulantes') {
+                        return 'Postulantes';
                     }
                 }
 

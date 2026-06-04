@@ -43,14 +43,16 @@
                                                 <i class="fas fa-pencil-alt"></i> Editar
                                             </a>
 
-                                            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="post"
-                                                id="miFormulario{{ $role->id }}" data-delete-form>
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                                </button>
-                                            </form>
+                                            @can('admin.roles.destroy')
+                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="post"
+                                                    id="miFormulario{{ $role->id }}" data-delete-form>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </div>
 
                                     </td>

@@ -346,12 +346,20 @@ return [
             'submenu' => [
                                 
                 [
-                    
+                    'can'     => 'admin.roles.index',
                     'text'    => 'Roles y Permisos',
                     'url'     => '/admin/roles',
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    'can'     => 'admin.postulantes.index',
+                    'text'    => 'Gestionar Postulantes',
+                    'url'     => '/admin/postulantes',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
+
 
             ],
         ],

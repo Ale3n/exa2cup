@@ -26,19 +26,19 @@ Route::post('/admin/gestiones/create', [App\Http\Controllers\GestionController::
 Route::put('/admin/gestiones/{gestion}', [App\Http\Controllers\GestionController::class, 'update'])->name('admin.gestiones.update')->middleware('auth','can:admin.gestiones.update');//Update
 Route::delete('/admin/gestiones/{gestion}', [App\Http\Controllers\GestionController::class, 'destroy'])->name('admin.gestiones.destroy')->middleware('auth','can:admin.gestiones.destroy');
 
-//estar parte es para los grupos
+//estar parte es para los ----GRUPOS----
 Route::get('/admin/grupos', [App\Http\Controllers\GrupoController::class, 'index'])->name('admin.grupos.index')->middleware('auth','can:admin.grupos.index');
 Route::post('/admin/grupos/create', [App\Http\Controllers\GrupoController::class, 'store'])->name('admin.grupos.create')->middleware('auth','can:admin.grupos.create');
 Route::put('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'update'])->name('admin.grupos.update')->middleware('auth','can:admin.grupos.update');
 Route::delete('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'destroy'])->name('admin.grupos.destroy')->middleware('auth','can:admin.grupos.destroy');
 
-//estar parte es para las carreras gestiones
+//estar parte es para las ----CARRERAS-GESTIONES---- gestiones
 Route::get('/admin/carrera-gestiones', [App\Http\Controllers\CarreraGestionController::class, 'index'])->name('admin.carrera-gestiones.index')->middleware('auth','can:admin.carrera-gestiones.index');
 Route::post('/admin/carrera-gestiones/create', [App\Http\Controllers\CarreraGestionController::class, 'store'])->name('admin.carrera-gestiones.create')->middleware('auth','can:admin.carrera-gestiones.create');
 Route::put('/admin/carrera-gestiones/{carreraGestion}', [App\Http\Controllers\CarreraGestionController::class, 'update'])->name('admin.carrera-gestiones.update')->middleware('auth','can:admin.carrera-gestiones.update');
 Route::delete('/admin/carrera-gestiones/{carreraGestion}', [App\Http\Controllers\CarreraGestionController::class, 'destroy'])->name('admin.carrera-gestiones.destroy')->middleware('auth','can:admin.carrera-gestiones.destroy');
 
-//rutas que van a ser de ROLES del sitema CreateReadUpdateDelete
+//rutas que van a ser de ----ROLES---- del sitema CreateReadUpdateDelete
 //trabajando con vistas
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index')->middleware('auth','can:admin.roles.index');
 Route::get('/admin/roles/create', [App\Http\Controllers\RoleController::class, 'create'])->name('admin.roles.create')->middleware('auth','can:admin.roles.create');//retorna la vista
@@ -49,3 +49,13 @@ Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 
 //el metodo que da permisos
 Route::get('/admin/roles/{id}/permisos', [App\Http\Controllers\RoleController::class, 'permisos'])->name('admin.roles.permisos')->middleware('auth','can:admin.roles.permisos');//el que da permisos che
 Route::post('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'update_permisos'])->name('admin.roles.update_permisos')->middleware('auth','can:admin.roles.update_permisos');//el que da permisos che
+
+//rutas que van a ser de ----POSTULANTES---- del sitema CreateReadUpdateDelete
+//trabajando con vistas
+Route::get('/admin/postulantes/', [App\Http\Controllers\PostulanteController::class,'index'])->name('admin.postulantes.index')->middleware('auth','can:admin.postulantes.index');
+Route::get('/admin/postulantes/create', [App\Http\Controllers\PostulanteController::class,'create'])->name('admin.postulantes.create')->middleware('auth','can:admin.postulantes.create');
+Route::post('/admin/postulantes/create', [App\Http\Controllers\PostulanteController::class,'store'])->name('admin.postulantes.store')->middleware('auth','can:admin.postulantes.store');
+Route::get('/admin/postulantes/{id}', [App\Http\Controllers\PostulanteController::class,'show'])->name('admin.postulantes.show')->middleware('auth','can:admin.postulantes.show');
+Route::get('/admin/postulantes/{id}/edit', [App\Http\Controllers\PostulanteController::class,'edit'])->name('admin.postulantes.edit')->middleware('auth','can:admin.postulantes.edit');
+Route::put('/admin/postulantes/{id}', [App\Http\Controllers\PostulanteController::class,'update'])->name('admin.postulantes.update')->middleware('auth','can:admin.postulantes.update');
+Route::delete('/admin/postulantes/{id}', [App\Http\Controllers\PostulanteController::class,'destroy'])->name('admin.postulantes.destroy')->middleware('auth','can:admin.postulantes.destroy');
