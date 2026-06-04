@@ -314,7 +314,7 @@ return [
                     'classes' => 'bg-blue text-white',
                 ],
                 [
-                    
+                    'can'     => 'admin.gestiones.index',
                     'text'    => 'Gestiones',
                     'url'     => 'admin/gestiones',
                     'icon'    => 'fas fa-fw fa-users-cog',
@@ -338,6 +338,23 @@ return [
 
             ],
         ],  
+
+        [
+            'text'    => 'Ciclo 2',
+            'icon'    => 'fas fa-fw fa-shield-alt',
+            'classes' => 'bg-dark text-white',
+            'submenu' => [
+                                
+                [
+                    
+                    'text'    => 'Roles y Permisos',
+                    'url'     => '/admin/roles',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
+
+            ],
+        ],
     ],
 
     /*

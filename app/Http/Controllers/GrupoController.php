@@ -55,7 +55,6 @@ class GrupoController extends Controller
         $grupo->codigo      = $request->codigo;
         $grupo->dias        = $request->dias;
         $grupo->modalidad   = $request->modalidad;
-        $grupo->cupo_maximo = 70;
         $grupo->inscritos   = $request->inscritos ?? 0;
 
         $grupo->save();

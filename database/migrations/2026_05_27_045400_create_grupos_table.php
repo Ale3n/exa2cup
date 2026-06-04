@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('codigo', 10)->unique();
             $table->string('dias', 20)->default('Lunes a Viernes');
             $table->string('modalidad', 20)->default('presencial');
-            $table->unsignedSmallInteger('cupo_maximo')->default(70);
             $table->unsignedSmallInteger('inscritos')->default(0);
             $table->timestamps();
         });
