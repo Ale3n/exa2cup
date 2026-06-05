@@ -59,3 +59,13 @@ Route::get('/admin/postulantes/{id}', [App\Http\Controllers\PostulanteController
 Route::get('/admin/postulantes/{id}/edit', [App\Http\Controllers\PostulanteController::class,'edit'])->name('admin.postulantes.edit')->middleware('auth','can:admin.postulantes.edit');
 Route::put('/admin/postulantes/{id}', [App\Http\Controllers\PostulanteController::class,'update'])->name('admin.postulantes.update')->middleware('auth','can:admin.postulantes.update');
 Route::delete('/admin/postulantes/{id}', [App\Http\Controllers\PostulanteController::class,'destroy'])->name('admin.postulantes.destroy')->middleware('auth','can:admin.postulantes.destroy');
+
+//rutas para el --PERSONAL--- 
+Route::get('/admin/personal/{tipo}', [App\Http\Controllers\PersonalController::class, 'index'])->name('admin.personal.index')->middleware('auth','can:admin.personal.index');//retorna la vista indexx
+Route::get('/admin/personal/create/{tipo}', [App\Http\Controllers\PersonalController::class, 'create'])->name('admin.personal.create')->middleware('auth','can:admin.personal.create');//retorna la vista create
+Route::post('/admin/personal/create', [App\Http\Controllers\PersonalController::class, 'store'])->name('admin.personal.store')->middleware('auth','can:admin.personal.store');//Create
+Route::get('/admin/personal/show/{id}', [App\Http\Controllers\PersonalController::class, 'show'])->name('admin.personal.show')->middleware('auth','can:admin.personal.show');//retorna la vista show
+Route::get('/admin/personal/{id}/edit', [App\Http\Controllers\PersonalController::class, 'edit'])->name('admin.personal.edit')->middleware('auth','can:admin.personal.edit');//Read
+Route::put('/admin/personal/{id}', [App\Http\Controllers\PersonalController::class, 'update'])->name('admin.personal.update')->middleware('auth','can:admin.personal.update');//Update
+Route::delete('/admin/personal/{id}', [App\Http\Controllers\PersonalController::class, 'destroy'])->name('admin.personal.destroy')->middleware('auth','can:admin.personal.destroy');//Delete
+

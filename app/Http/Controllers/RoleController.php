@@ -48,7 +48,7 @@ class RoleController extends Controller
     {
         $rol = Role::findOrFail($id);
 
-        $allowedModules = ['carreras', 'grupos', 'gestiones', 'carrera-gestiones', 'carreragestiones', 'postulantes'];
+        $allowedModules = ['carreras', 'grupos', 'gestiones', 'carrera-gestiones', 'carreragestiones', 'postulantes', 'personal'];
         $allowedActions = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
 
         $permisos = Permission::all()

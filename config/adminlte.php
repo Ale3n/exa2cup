@@ -307,7 +307,7 @@ return [
             'submenu' => [
                                 
                 [
-                    
+                    'can'     => 'admin.carreras.index',
                     'text'    => 'Carreras',
                     'url'     => 'admin/carreras',
                     'icon'    => 'fas fa-fw fa-users-cog',
@@ -321,14 +321,14 @@ return [
                     'classes' => 'bg-blue text-white',
                 ],
                 [
-                    
+                    'can'     => 'admin.grupos.index',
                     'text'    => 'Grupos',
                     'url'     => 'admin/grupos',
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
                 [
-                    
+                    'can'     => 'admin.carrera-gestiones.index',
                     'text'    => 'Carrera-Gestiones',
                     'url'     => 'admin/carrera-gestiones',
                     'icon'    => 'fas fa-fw fa-users-cog',
@@ -358,6 +358,25 @@ return [
                     'url'     => '/admin/postulantes',
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
+                ],
+                [
+                    'can'     => 'admin.personal.index',
+                    'text'    => 'Gestionar Personal',
+                    'url'     => 'admin/personal',
+                    'icon'    => 'fas fa-fw fa-briefcase',
+                    'classes' => 'bg-blue text-white',
+                    'submenu' => [
+                        [
+                            'text'    => 'Administrativo',
+                            'url'     => 'admin/personal/administrativo',
+                            'classes' => 'bg-white text-black',
+                        ],
+                        [
+                            'text'    => 'Docente',
+                            'url'     => 'admin/personal/docente',
+                            'classes' => 'bg-white text-black',
+                        ],
+                    ],
                 ],
 
 
