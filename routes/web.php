@@ -69,3 +69,16 @@ Route::get('/admin/personal/{id}/edit', [App\Http\Controllers\PersonalController
 Route::put('/admin/personal/{id}', [App\Http\Controllers\PersonalController::class, 'update'])->name('admin.personal.update')->middleware('auth','can:admin.personal.update');//Update
 Route::delete('/admin/personal/{id}', [App\Http\Controllers\PersonalController::class, 'destroy'])->name('admin.personal.destroy')->middleware('auth','can:admin.personal.destroy');//Delete
 
+//rutas para el --AULAS---
+Route::get('/admin/aulas', [App\Http\Controllers\AulaController::class, 'index'])->name('admin.aulas.index')->middleware('auth','can:admin.aulas.index');
+Route::post('/admin/aulas/create', [App\Http\Controllers\AulaController::class, 'store'])->name('admin.aulas.create')->middleware('auth','can:admin.aulas.create');
+Route::put('/admin/aulas/{aula}', [App\Http\Controllers\AulaController::class, 'update'])->name('admin.aulas.update')->middleware('auth','can:admin.aulas.update');
+Route::delete('/admin/aulas/{aula}', [App\Http\Controllers\AulaController::class, 'destroy'])->name('admin.aulas.destroy')->middleware('auth','can:admin.aulas.destroy');
+
+//rutas para ---MATERIAS----
+Route::get('/admin/materias', [App\Http\Controllers\MateriaController::class, 'index'])->name('admin.materias.index')->middleware('auth','can:admin.materias.index');
+Route::post('/admin/materias/create', [App\Http\Controllers\MateriaController::class, 'store'])->name('admin.materias.create')->middleware('auth','can:admin.materias.create');
+Route::put('/admin/materias/{materia}', [App\Http\Controllers\MateriaController::class, 'update'])->name('admin.materias.update')->middleware('auth','can:admin.materias.update');
+Route::delete('/admin/materias/{materia}', [App\Http\Controllers\MateriaController::class, 'destroy'])->name('admin.materias.destroy')->middleware('auth','can:admin.materias.destroy');
+
+

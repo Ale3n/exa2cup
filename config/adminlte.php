@@ -334,6 +334,20 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    'can'     => 'admin.aulas.index',
+                    'text'    => 'Aulas',
+                    'url'     => 'admin/aulas',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
+                [
+                    'can'     => 'admin.materias.index',
+                    'text'    => 'Materias',
+                    'url'     => 'admin/materias',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
                 //tomar en cuenta
 
             ],

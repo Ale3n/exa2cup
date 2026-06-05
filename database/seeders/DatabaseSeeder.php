@@ -8,6 +8,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Carrera;
+use App\Models\Materia;
 
 class DatabaseSeeder extends Seeder
 {
@@ -67,6 +68,33 @@ class DatabaseSeeder extends Seeder
                 'estado' => 'activo'
             ]
         );
+
+        Materia::firstOrCreate(
+            ['codigo' => 'MAT'],
+            [
+                'nombre' => 'Matemáticas',
+            ]
+        );
+        Materia::firstOrCreate(
+            ['codigo' => 'FIS'],
+            [
+                'nombre' => 'Física',
+            ]
+        );
+        Materia::firstOrCreate(
+            ['codigo' => 'PROG'],
+            [
+                'nombre' => 'Programación',
+            ]
+        );
+        Materia::firstOrCreate(
+            ['codigo' => 'ING'],
+            [
+                    'nombre' => 'Ingles',
+            ]
+        );
+            
+
 
 
 

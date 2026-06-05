@@ -72,10 +72,10 @@ class RoleSeeder extends Seeder
 
 
         // --- PERMISOS PARA AULAS CRUD---
-        //Permission::firstOrCreate(['name' => 'admin.aulas.index'])->syncRoles($admin);
-        //Permission::firstOrCreate(['name' => 'admin.aulas.create'])->syncRoles($admin);
-        //Permission::firstOrCreate(['name' => 'admin.aulas.update'])->syncRoles($admin);
-        //Permission::firstOrCreate(['name' => 'admin.aulas.destroy'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.aulas.index'])->syncRoles($admin, $administrativo, $docente);
+        Permission::firstOrCreate(['name' => 'admin.aulas.create'])->syncRoles($admin, $administrativo);
+        Permission::firstOrCreate(['name' => 'admin.aulas.update'])->syncRoles($admin, $administrativo);
+        Permission::firstOrCreate(['name' => 'admin.aulas.destroy'])->syncRoles($admin);
 
         // --- PERMISOS PARA REPORTES ---
         //Permission::firstOrCreate(['name' => 'admin.reportes.index'])->syncRoles($admin);
@@ -98,6 +98,12 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'admin.carrera-gestiones.create'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.carrera-gestiones.update'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.carrera-gestiones.destroy'])->syncRoles($admin); 
-     
+
+        // --- PERMISOS PARA MATERIAS CRUD---
+        Permission::firstOrCreate(['name' => 'admin.materias.index'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.materias.create'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.materias.update'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.materias.destroy'])->syncRoles($admin);
+        
     }
 }
