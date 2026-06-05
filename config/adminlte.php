@@ -392,6 +392,13 @@ return [
                         ],
                     ],
                 ],
+                [
+                    'can'     => 'admin.grupo-materias.index',
+                    'text'    => 'Gestionar Grupo-Materias',
+                    'url'     => '/admin/grupo-materias',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
 
 
             ],

@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\GrupoMateria;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Grupo;
+use App\Models\Materia;
+use App\Models\Personal;
+use App\Models\Aula;
+
+class GrupoMateriaController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $grupoMaterias = GrupoMateria::with([
+            'grupo',
+            'materia',
+            'personal',
+            'aula'
+        ])->get();
+
+        $grupos = Grupo::all();
+        $materias = Materia::all();
+        $personales = Personal::whereHas('usuario', function ($query) {
+            $query->whereHas('roles', function ($query) {
+                $query->where('name', 'DOCENTE');
+            });
+        })->get();
+        $aulas = Aula::all();
+
+        return view('admin.grupo-materias.index', compact(
+            'grupoMaterias',
+            'grupos',
+            'materias',
+            'personales',
+            'aulas'
+        ));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+
+            'grupo_id'      => 'required|exists:grupos,id',
+            'materia_id'    => 'required|exists:materias,id',
+            'personal_id'   => 'required|exists:personals,id',
+            'aula_id'       => 'required|exists:aulas,id',
+            'hora_inicio'   => 'required',
+            'hora_fin'      => 'required|after:hora_inicio',
+
+        ]);
+
+        if ($validate->fails()) {
+
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        // Evitar duplicados
+        $existe = GrupoMateria::where('grupo_id', $request->grupo_id)
+            ->where('materia_id', $request->materia_id)
+            ->exists();
+
+        if ($existe) {
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('mensaje', 'La materia ya está asignada a este grupo.')
+                ->with('icono', 'error');
+        }
+
+        $grupoMateria = new GrupoMateria();
+
+        $grupoMateria->grupo_id     = $request->grupo_id;
+        $grupoMateria->materia_id   = $request->materia_id;
+        $grupoMateria->personal_id  = $request->personal_id;
+        $grupoMateria->aula_id      = $request->aula_id;
+        $grupoMateria->hora_inicio  = $request->hora_inicio;
+        $grupoMateria->hora_fin     = $request->hora_fin;
+
+        $grupoMateria->save();
+
+        return redirect()->route('admin.grupo-materias.index')
+            ->with('mensaje', 'La asignación se creó correctamente.')
+            ->with('icono', 'success');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(GrupoMateria $grupoMateria)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(GrupoMateria $grupoMateria)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, GrupoMateria $grupoMateria)
+    {
+        $validate = Validator::make($request->all(), [
+
+            'grupo_id'      => 'required|exists:grupos,id',
+            'materia_id'    => 'required|exists:materias,id',
+            'personal_id'   => 'required|exists:personals,id',
+            'aula_id'       => 'required|exists:aulas,id',
+            'hora_inicio'   => 'required',
+            'hora_fin'      => 'required|after:hora_inicio',
+
+        ]);
+
+        if ($validate->fails()) {
+
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput()
+                ->with('modal_id', $grupoMateria->id);
+        }
+
+        // Evitar duplicados
+        $existe = GrupoMateria::where('grupo_id', $request->grupo_id)
+            ->where('materia_id', $request->materia_id)
+            ->where('id', '!=', $grupoMateria->id)
+            ->exists();
+
+        if ($existe) {
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('modal_id', $grupoMateria->id)
+                ->with('mensaje', 'La materia ya está asignada a este grupo.')
+                ->with('icono', 'error');
+        }
+
+        $grupoMateria->grupo_id     = $request->grupo_id;
+        $grupoMateria->materia_id   = $request->materia_id;
+        $grupoMateria->personal_id  = $request->personal_id;
+        $grupoMateria->aula_id      = $request->aula_id;
+        $grupoMateria->hora_inicio  = $request->hora_inicio;
+        $grupoMateria->hora_fin     = $request->hora_fin;
+
+        $grupoMateria->save();
+
+        return redirect()->route('admin.grupo-materias.index')
+            ->with('mensaje', 'La asignación se actualizó correctamente.')
+            ->with('icono', 'success');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(GrupoMateria $grupoMateria)
+    {
+        $grupoMateria->delete();
+
+        return redirect()->route('admin.grupo-materias.index')
+            ->with('mensaje', 'La asignación se eliminó correctamente.')
+            ->with('icono', 'success');
+    }
+}

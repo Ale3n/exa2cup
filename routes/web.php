@@ -81,4 +81,10 @@ Route::post('/admin/materias/create', [App\Http\Controllers\MateriaController::c
 Route::put('/admin/materias/{materia}', [App\Http\Controllers\MateriaController::class, 'update'])->name('admin.materias.update')->middleware('auth','can:admin.materias.update');
 Route::delete('/admin/materias/{materia}', [App\Http\Controllers\MateriaController::class, 'destroy'])->name('admin.materias.destroy')->middleware('auth','can:admin.materias.destroy');
 
+//rutas para ---GRUPOS-MATERIAS----
+Route::get('/admin/grupo-materias', [App\Http\Controllers\GrupoMateriaController::class, 'index'])->name('admin.grupo-materias.index')->middleware('auth','can:admin.grupo-materias.index');
+Route::post('/admin/grupo-materias/create', [App\Http\Controllers\GrupoMateriaController::class, 'store'])->name('admin.grupo-materias.create')->middleware('auth','can:admin.grupo-materias.create');
+Route::put('/admin/grupo-materias/{grupo_materia}', [App\Http\Controllers\GrupoMateriaController::class, 'update'])->name('admin.grupo-materias.update')->middleware('auth','can:admin.grupo-materias.update');
+Route::delete('/admin/grupo-materias/{grupo_materia}', [App\Http\Controllers\GrupoMateriaController::class, 'destroy'])->name('admin.grupo-materias.destroy')->middleware('auth','can:admin.grupo-materias.destroy');
+
 

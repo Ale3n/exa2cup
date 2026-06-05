@@ -104,6 +104,13 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'admin.materias.create'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.materias.update'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.materias.destroy'])->syncRoles($admin);
+
+        //--PERMISOS PARA GRUPOS-MATERIAS CRUD---
+        Permission::firstOrCreate(['name' => 'admin.grupo-materias.index'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.grupo-materias.create'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.grupo-materias.update'])->syncRoles($admin);
+        Permission::firstOrCreate(['name' => 'admin.grupo-materias.destroy'])->syncRoles($admin);
+
         
     }
 }
