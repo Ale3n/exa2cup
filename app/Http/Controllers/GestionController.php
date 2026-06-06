@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Gestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -44,6 +45,13 @@ class GestionController extends Controller
         $gestion->descripcion = $request->descripcion_create;
         $gestion->estado = $request->estado_create;
         $gestion->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó la gestión ' . $gestion->año . ' - ' . $gestion->periodo . ' (' . $gestion->descripcion . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.gestiones.index')
             ->with('mensaje', 'La gestión se creó correctamente.')
             ->with('icono', 'success');
@@ -95,6 +103,12 @@ class GestionController extends Controller
         $gestion->estado = $request->estado;
         $gestion->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó la gestión ' . $gestion->año . ' - ' . $gestion->periodo . ' (' . $gestion->descripcion . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.gestiones.index')
             ->with('mensaje', 'La gestión se actualizó correctamente')
             ->with('icono', 'success');
@@ -107,6 +121,12 @@ class GestionController extends Controller
     {
         //
         $gestion->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó la gestión ' . $gestion->año . ' - ' . $gestion->periodo . ' (' . $gestion->descripcion . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.gestiones.index')
             ->with('mensaje', 'La gestión se eliminó correctamente')

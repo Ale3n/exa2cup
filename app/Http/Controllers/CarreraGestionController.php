@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Carrera;
 use App\Models\Gestion;
+use App\Models\Bitacora;
 
 class CarreraGestionController extends Controller
 {
@@ -73,11 +74,15 @@ class CarreraGestionController extends Controller
 
         $carreraGestion->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó carrera-gestión: ' . $carreraGestion->carrera->nombre . ' / ' . $carreraGestion->gestion->nombre,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.carrera-gestiones.index')
             ->with('mensaje', 'La carrera gestión se creó correctamente.')
             ->with('icono', 'success');
-
-        
 
     }
 
@@ -141,6 +146,12 @@ class CarreraGestionController extends Controller
 
         $carreraGestion->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó carrera-gestión: ' . $carreraGestion->carrera->nombre . ' / ' . $carreraGestion->gestion->nombre,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.carrera-gestiones.index')
             ->with('mensaje', 'La carrera gestión se actualizó correctamente.')
             ->with('icono', 'success');
@@ -160,7 +171,16 @@ class CarreraGestionController extends Controller
                 ->with('icono', 'error');
         }
 
+        $carreraNombre = $carreraGestion->carrera->nombre;
+        $gestionNombre = $carreraGestion->gestion->nombre;
+
         $carreraGestion->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó carrera-gestión: ' . $carreraNombre . ' / ' . $gestionNombre,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.carrera-gestiones.index')
             ->with('mensaje', 'La carrera gestión se eliminó correctamente.')

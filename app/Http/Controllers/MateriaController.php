@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Materia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,6 +40,12 @@ class MateriaController extends Controller
         $materia->nombre = $request->nombre_create;
         $materia->codigo = $request->codigo_create;
         $materia->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó la materia ' . $materia->nombre . ' (' . $materia->codigo . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.materias.index')
             ->with('mensaje', 'La materia se ha creado correctamente.')
@@ -85,6 +92,12 @@ class MateriaController extends Controller
         $materia->codigo = $request->codigo;
         $materia->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó la materia ' . $materia->nombre . ' (' . $materia->codigo . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.materias.index')
             ->with('mensaje', 'La materia se ha actualizado correctamente')
             ->with('icono', 'success');
@@ -98,6 +111,12 @@ class MateriaController extends Controller
         $materia = Materia::find($id);
 
         $materia->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó la materia ' . $materia->nombre . ' (' . $materia->codigo . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.materias.index')
             ->with('mensaje', 'La materia se ha eliminado correctamente')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\GrupoMateria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -74,6 +75,29 @@ class GrupoMateriaController extends Controller
                 ->withInput();
         }
 
+        $personal = Personal::find($request->personal_id);
+        $materia = Materia::find($request->materia_id);
+
+        if (!$personal || !$materia || trim(strtolower($personal->profesion)) !== trim(strtolower($materia->nombre))) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('mensaje', 'El docente sólo puede enseñar la materia de su profesión.')
+                ->with('icono', 'error');
+        }
+
+        $gruposAsignados = GrupoMateria::where('personal_id', $request->personal_id)
+            ->pluck('grupo_id')
+            ->unique();
+
+        if (!$gruposAsignados->contains($request->grupo_id) && $gruposAsignados->count() >= 4) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('mensaje', 'El docente ya está asignado a 4 grupos distintos.')
+                ->with('icono', 'error');
+        }
+
         // Evitar duplicados
         $existe = GrupoMateria::where('grupo_id', $request->grupo_id)
             ->where('materia_id', $request->materia_id)
@@ -98,6 +122,12 @@ class GrupoMateriaController extends Controller
         $grupoMateria->hora_fin     = $request->hora_fin;
 
         $grupoMateria->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó la asignación de materia ' . $materia->nombre . ' al grupo ' . $request->grupo_id . ' con docente ' . $personal->nombre,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.grupo-materias.index')
             ->with('mensaje', 'La asignación se creó correctamente.')
@@ -145,6 +175,32 @@ class GrupoMateriaController extends Controller
                 ->with('modal_id', $grupoMateria->id);
         }
 
+        $personal = Personal::find($request->personal_id);
+        $materia = Materia::find($request->materia_id);
+
+        if (!$personal || !$materia || trim(strtolower($personal->profesion)) !== trim(strtolower($materia->nombre))) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('modal_id', $grupoMateria->id)
+                ->with('mensaje', 'El docente sólo puede enseñar la materia de su profesión.')
+                ->with('icono', 'error');
+        }
+
+        $gruposAsignados = GrupoMateria::where('personal_id', $request->personal_id)
+            ->where('id', '!=', $grupoMateria->id)
+            ->pluck('grupo_id')
+            ->unique();
+
+        if (!$gruposAsignados->contains($request->grupo_id) && $gruposAsignados->count() >= 4) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('modal_id', $grupoMateria->id)
+                ->with('mensaje', 'El docente ya está asignado a 4 grupos distintos.')
+                ->with('icono', 'error');
+        }
+
         // Evitar duplicados
         $existe = GrupoMateria::where('grupo_id', $request->grupo_id)
             ->where('materia_id', $request->materia_id)
@@ -170,6 +226,12 @@ class GrupoMateriaController extends Controller
 
         $grupoMateria->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó la asignación de materia ' . $materia->nombre . ' al grupo ' . $request->grupo_id . ' con docente ' . $personal->nombre,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.grupo-materias.index')
             ->with('mensaje', 'La asignación se actualizó correctamente.')
             ->with('icono', 'success');
@@ -180,7 +242,16 @@ class GrupoMateriaController extends Controller
      */
     public function destroy(GrupoMateria $grupoMateria)
     {
+        $materia = Materia::find($grupoMateria->materia_id);
+        $personal = Personal::find($grupoMateria->personal_id);
+
         $grupoMateria->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó la asignación de materia ' . ($materia->nombre ?? $grupoMateria->materia_id) . ' del grupo ' . $grupoMateria->grupo_id . ' con docente ' . ($personal->nombre ?? $grupoMateria->personal_id),
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.grupo-materias.index')
             ->with('mensaje', 'La asignación se eliminó correctamente.')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bitacora;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -48,5 +49,17 @@ class LoginController extends Controller
             'email' => strtolower(trim($request->email)),
             'password' => $request->password,
         ];
+    }
+
+    /**
+     * The user has been authenticated.
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        Bitacora::create([
+            'usuario' => $user->name,
+            'accion' => 'Inicio sesión',
+            'hora' => now('America/La_Paz'),
+        ]);
     }
 }

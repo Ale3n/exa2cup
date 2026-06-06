@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
+use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,6 +45,13 @@ class CarreraController extends Controller
         $carrera->estado = $request->estado_create;
 
         $carrera->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó la carrera ' . $carrera->nombre . ' (' . $carrera->codigo . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.carreras.index')
         ->with('mensaje', 'La carrera se creó correctamente.')
         ->with('icono', 'success');
@@ -94,6 +102,13 @@ class CarreraController extends Controller
         $carrera->estado = $request->estado;
 
         $carrera->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó la carrera ' . $carrera->nombre . ' (' . $carrera->codigo . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.carreras.index')
         ->with('mensaje', 'La carrera se actualizó correctamente')
         ->with('icono', 'success');
@@ -108,7 +123,17 @@ class CarreraController extends Controller
 
         //$nombre = $carrera->nombre;
 
+        $nombre = $carrera->nombre;
+        $codigo = $carrera->codigo;
+
         $carrera->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó la carrera ' . $nombre . ' (' . $codigo . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.carreras.index')
         ->with('mensaje', 'La carrera se eliminó correctamente')
         ->with('icono', 'success');

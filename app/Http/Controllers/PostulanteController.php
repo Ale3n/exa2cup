@@ -6,6 +6,7 @@ use App\Models\Postulante;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Carrera;
+use App\Models\Bitacora;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -163,6 +164,12 @@ class PostulanteController extends Controller
 
         $postulante->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó el postulante ' . $postulante->apellidos . ' ' . $postulante->nombres . ' (CI ' . $postulante->ci . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()
             ->route('admin.postulantes.index')
             ->with('mensaje', 'El postulante se registró correctamente. La contraseña inicial es su cédula de identidad.')
@@ -289,6 +296,12 @@ class PostulanteController extends Controller
 
         $postulante->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó el postulante ' . $postulante->apellidos . ' ' . $postulante->nombres . ' (CI ' . $postulante->ci . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()
             ->route('admin.postulantes.index')
             ->with('mensaje', 'El postulante se actualizó correctamente.')
@@ -309,6 +322,12 @@ class PostulanteController extends Controller
         $usuario->delete();
 
         $postulante->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó el postulante ' . $postulante->apellidos . ' ' . $postulante->nombres . ' (CI ' . $postulante->ci . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()
             ->route('admin.postulantes.index')

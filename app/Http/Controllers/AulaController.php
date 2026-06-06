@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aula;
+use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,6 +40,12 @@ class AulaController extends Controller
         $aula->numero = $request->numero_create;
         $aula->capacidad = $request->capacidad_create;
         $aula->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó el aula #' . $aula->id . ' con número ' . $aula->numero,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.aulas.index')
             ->with('mensaje', 'El aula se ha creado correctamente.')
@@ -85,6 +92,12 @@ class AulaController extends Controller
         $aula->capacidad = $request->capacidad;
         $aula->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó el aula #' . $aula->id . ' a número ' . $aula->numero,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.aulas.index')
             ->with('mensaje', 'El aula se ha actualizado correctamente')
             ->with('icono', 'success');
@@ -100,6 +113,12 @@ class AulaController extends Controller
         $numero = $aula->numero;
 
         $aula->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó el aula #' . $id . ' con número ' . $numero,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.aulas.index')
             ->with('mensaje', 'El aula se ha eliminado correctamente')

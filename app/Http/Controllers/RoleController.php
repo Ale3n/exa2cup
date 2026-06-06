@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
+use App\Models\Bitacora;
 
 class RoleController extends Controller
 {
@@ -38,6 +39,13 @@ class RoleController extends Controller
         $rol->name = $request->name;
         $rol->guard_name = 'web';
         $rol->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó el rol ' . $rol->name,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.roles.index')
             ->with('mensaje', 'El rol se ha creado correctamente')
             ->with('icono', 'success');
@@ -52,7 +60,8 @@ class RoleController extends Controller
         'materias',
         'calificaciones',
         'grupo-materias',
-        'inscripcion-grupos'];
+        'inscripcion-grupos',
+        'bitacora'];
         $allowedActions = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
 
         $permisos = Permission::all()
@@ -133,6 +142,9 @@ class RoleController extends Controller
                     if ($module === 'inscripcion-grupos') {
                         return 'Inscripción-Grupos';
                     }
+                    if ($module === 'bitacora') {
+                        return 'Bitácora';
+                    }
                 }
 
                 return 'Otros permisos';
@@ -171,6 +183,13 @@ class RoleController extends Controller
         $rol->name = $request->name;
         $rol->guard_name = 'web';
         $rol->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó el rol ' . $rol->name,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.roles.index')
             ->with('mensaje', 'El rol se ha actualizado correctamente')
             ->with('icono', 'success');
@@ -193,7 +212,15 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         $rol = Role::findOrFail($id);
+        $rolName = $rol->name;
         $rol->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó el rol ' . $rolName,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.roles.index')
             ->with('mensaje', 'El rol se ha eliminado correctamente')
             ->with('icono', 'success');

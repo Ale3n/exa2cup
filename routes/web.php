@@ -98,3 +98,6 @@ Route::get('/admin/calificaciones', [App\Http\Controllers\CalificacionController
 Route::post('/admin/calificaciones/create', [App\Http\Controllers\CalificacionController::class, 'store'])->name('admin.calificaciones.create')->middleware('auth','can:admin.calificaciones.create');
 Route::put('/admin/calificaciones/{calificacion}', [App\Http\Controllers\CalificacionController::class, 'update'])->name('admin.calificaciones.update')->middleware('auth','can:admin.calificaciones.update');
 Route::delete('/admin/calificaciones/{calificacion}', [App\Http\Controllers\CalificacionController::class, 'destroy'])->name('admin.calificaciones.destroy')->middleware('auth','can:admin.calificaciones.destroy');
+
+//rutas para ---BITACORA----
+Route::get('/admin/bitacora', [App\Http\Controllers\BitacoraController::class, 'index'])->name('admin.bitacora.index')->middleware(['auth', 'verified']);

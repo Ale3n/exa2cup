@@ -6,6 +6,8 @@ use App\Models\Personal;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
+use App\Models\Materia;
+use App\Models\Bitacora;
 use Illuminate\Support\Facades\Hash;
 class PersonalController extends Controller
 {
@@ -24,6 +26,7 @@ class PersonalController extends Controller
     public function create($tipo)
     {
         $roles = Role::all();
+        $materias = Materia::all();
 
         // Pasar un objeto Personal vacío con un usuario temporal
         // para evitar errores en la vista al acceder a relaciones
@@ -32,7 +35,7 @@ class PersonalController extends Controller
         $usuario->setRelation('roles', collect());
         $personal->setRelation('usuario', $usuario);
 
-        return view('admin.personal.create', compact('tipo', 'roles', 'personal'));
+        return view('admin.personal.create', compact('tipo', 'roles', 'personal', 'materias'));
     }
 
     /**
@@ -51,7 +54,7 @@ class PersonalController extends Controller
             'fecha_nacimiento' => 'required',
             'telefono' => 'required',
             'direccion' => 'required',
-            'profesion' => 'required',
+            'profesion' => 'required|exists:materias,nombre',
 
             'email' => 'required|email|unique:users,email',
 
@@ -90,6 +93,12 @@ class PersonalController extends Controller
 
         $personal->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó el personal ' . $personal->tipo . ' ' . $personal->apellidos . ' ' . $personal->nombres . ' (CI ' . $personal->ci . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.personal.index', $request->tipo)
             ->with('mensaje', 'El personal se ha creado correctamente')
             ->with('icono', 'success');
@@ -112,7 +121,8 @@ class PersonalController extends Controller
     {
         $personal = Personal::findOrFail($id);
         $roles = Role::all();
-        return view('admin.personal.edit', compact('personal', 'roles'));
+        $materias = Materia::all();
+        return view('admin.personal.edit', compact('personal', 'roles', 'materias'));
     }
 
     /**
@@ -135,7 +145,7 @@ class PersonalController extends Controller
             'fecha_nacimiento' => 'required',
             'telefono' => 'required',
             'direccion' => 'required',
-            'profesion' => 'required',
+            'profesion' => 'required|exists:materias,nombre',
 
             'email' => 'required|email|unique:users,email,' . $usuario->id,
 
@@ -168,6 +178,12 @@ class PersonalController extends Controller
 
         $personal->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó el personal ' . $personal->tipo . ' ' . $personal->apellidos . ' ' . $personal->nombres . ' (CI ' . $personal->ci . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.personal.index', $personal->tipo)
             ->with('mensaje', 'El personal ' . $personal->tipo . ' se ha actualizado correctamente')
             ->with('icono', 'success');
@@ -187,6 +203,12 @@ class PersonalController extends Controller
         // Por el cascade, al eliminar el usuario
         // también se elimina el registro en personals
         $usuario->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó el personal ' . $tipo . ' ' . $personal->apellidos . ' ' . $personal->nombres . ' (CI ' . $personal->ci . ')',
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.personal.index', $tipo)
             ->with('mensaje', 'El personal ' . $tipo . ' se ha eliminado correctamente')

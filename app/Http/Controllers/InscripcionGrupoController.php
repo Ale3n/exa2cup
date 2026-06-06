@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\InscripcionGrupo;
 use Illuminate\Http\Request;
 use App\Models\Postulante;
@@ -94,6 +95,14 @@ class InscripcionGrupoController extends Controller
         // Actualizar contador de inscritos
         $grupo->increment('inscritos');
 
+        $postulante = Postulante::find($request->postulante_id);
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Registró la inscripción del postulante ' . ($postulante->nombre ?? 'ID ' . $request->postulante_id) . ' en el grupo ' . ($grupo->codigo ?? 'ID ' . $request->grupo_id),
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()
             ->route('admin.inscripcion-grupos.index')
             ->with('mensaje', 'La inscripción fue registrada correctamente.')
@@ -158,6 +167,15 @@ class InscripcionGrupoController extends Controller
 
         $inscripcionGrupo->save();
 
+        $postulante = Postulante::find($request->postulante_id);
+        $grupo = Grupo::find($request->grupo_id);
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó la inscripción del postulante ' . ($postulante->nombre ?? 'ID ' . $request->postulante_id) . ' al grupo ' . ($grupo->codigo ?? 'ID ' . $request->grupo_id),
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()
             ->route('admin.inscripcion-grupos.index')
             ->with('mensaje', 'La inscripción se actualizó correctamente.')
@@ -170,12 +188,19 @@ class InscripcionGrupoController extends Controller
     public function destroy(InscripcionGrupo $inscripcionGrupo)
     {
         $grupo = $inscripcionGrupo->grupo;
+        $postulante = $inscripcionGrupo->postulante;
 
         $inscripcionGrupo->delete();
 
         if ($grupo && $grupo->inscritos > 0) {
             $grupo->decrement('inscritos');
         }
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó la inscripción del postulante ' . ($postulante->nombre ?? 'ID ' . $inscripcionGrupo->postulante_id) . ' del grupo ' . ($grupo->codigo ?? 'ID ' . $inscripcionGrupo->grupo_id),
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()
             ->route('admin.inscripcion-grupos.index')

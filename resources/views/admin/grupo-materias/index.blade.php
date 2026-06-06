@@ -259,7 +259,8 @@
                                                                     <option value="{{ $personal->id }}"
                                                                         {{ $grupoMateria->personal_id == $personal->id ? 'selected' : '' }}>
 
-                                                                        {{ $personal->apellidos }}
+                                                                        {{ $personal->apellidos }} {{ $personal->nombres }}
+                                                                        ({{ $personal->profesion }})
 
                                                                     </option>
 
@@ -482,7 +483,8 @@
 
                                         <option value="{{ $personal->id }}">
 
-                                            {{ $personal->apellidos }}
+                                            {{ $personal->apellidos }} {{ $personal->nombres }}
+                                            ({{ $personal->profesion }})
 
                                         </option>
 

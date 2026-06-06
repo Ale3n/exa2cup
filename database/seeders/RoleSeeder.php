@@ -111,6 +111,9 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'admin.calificaciones.update'])->syncRoles($admin, $administrativo, $docente);
         Permission::firstOrCreate(['name' => 'admin.calificaciones.destroy'])->syncRoles($admin);
 
+        // --- PERMISOS PARA BITACORA ---
+        Permission::firstOrCreate(['name' => 'admin.bitacora.index'])->syncRoles($admin);
+
         //--PERMISOS PARA GRUPOS-MATERIAS CRUD---
         Permission::firstOrCreate(['name' => 'admin.grupo-materias.index'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.grupo-materias.create'])->syncRoles($admin);

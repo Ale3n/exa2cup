@@ -413,6 +413,13 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    'can'     => 'admin.bitacora.index',
+                    'text'    => 'Bitácora',
+                    'url'     => '/admin/bitacora',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
 
 
             ],

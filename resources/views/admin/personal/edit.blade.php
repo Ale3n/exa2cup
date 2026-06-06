@@ -156,11 +156,15 @@
                             <div class="form-group">
                                 <label>Profesión</label><b> (*)</b>
 
-                                <input type="text"
-                                       name="profesion"
-                                       class="form-control"
-                                       value="{{ old('profesion', $personal->profesion) }}"
-                                       required>
+                                <select name="profesion" class="form-control" required>
+                                    <option value="">Seleccione una materia...</option>
+                                    @foreach ($materias as $materia)
+                                        <option value="{{ $materia->nombre }}"
+                                            {{ old('profesion', $personal->profesion) == $materia->nombre ? 'selected' : '' }}>
+                                            {{ $materia->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
 
                                 @error('profesion')
                                     <small class="text-danger">{{ $message }}</small>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Grupo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -59,6 +60,12 @@ class GrupoController extends Controller
 
         $grupo->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Creó el grupo ' . $grupo->codigo . ' en la gestión ' . $grupo->gestion_id,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.grupos.index')
             ->with('mensaje', 'El grupo se creó correctamente.')
             ->with('icono', 'success');
@@ -106,6 +113,12 @@ class GrupoController extends Controller
         $grupo->modalidad   = $request->modalidad;
         $grupo->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó el grupo ' . $grupo->codigo . ' en la gestión ' . $grupo->gestion_id,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.grupos.index')
             ->with('mensaje', 'El grupo se actualizó correctamente')
             ->with('icono', 'success');
@@ -125,7 +138,16 @@ class GrupoController extends Controller
             ->with('icono', 'error');
         }
 
+        $codigo = $grupo->codigo;
+        $gestionId = $grupo->gestion_id;
+
         $grupo->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó el grupo ' . $codigo . ' de la gestión ' . $gestionId,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.grupos.index')
             ->with('mensaje', 'El grupo se eliminó correctamente.')

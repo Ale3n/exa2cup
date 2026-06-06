@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\InscripcionGrupo;
 use App\Models\Materia;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Bitacora;
 
 class CalificacionController extends Controller
 {
@@ -71,6 +72,12 @@ class CalificacionController extends Controller
         $calificacion->nota = $request->nota_create;
 
         $calificacion->save();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Registró calificación #' . $calificacion->id . ' para inscripción ' . $calificacion->inscripcion_grupo_id . ' y materia ' . $calificacion->materia_id,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.calificaciones.index')
             ->with('mensaje', 'La calificación se ha registrado correctamente.')
@@ -138,6 +145,12 @@ class CalificacionController extends Controller
 
         $calificacion->save();
 
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Actualizó calificación #' . $calificacion->id . ' al examen ' . $calificacion->numero_examen . ' con nota ' . $calificacion->nota,
+            'hora' => now('America/La_Paz'),
+        ]);
+
         return redirect()->route('admin.calificaciones.index')
             ->with('mensaje', 'La calificación se ha actualizado correctamente.')
             ->with('icono', 'success');
@@ -151,6 +164,12 @@ class CalificacionController extends Controller
         $calificacion = Calificacion::findOrFail($id);
 
         $calificacion->delete();
+
+        Bitacora::create([
+            'usuario' => auth()->user()->name ?? 'Sistema',
+            'accion' => 'Eliminó calificación #' . $calificacion->id . ' / inscripción ' . $calificacion->inscripcion_grupo_id . ' / materia ' . $calificacion->materia_id,
+            'hora' => now('America/La_Paz'),
+        ]);
 
         return redirect()->route('admin.calificaciones.index')
             ->with('mensaje', 'La calificación se ha eliminado correctamente.')
