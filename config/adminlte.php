@@ -305,7 +305,7 @@ return [
             'icon'    => 'fas fa-fw fa-shield-alt',
             'classes' => 'bg-dark text-white',
             'submenu' => [
-                                
+
                 [
                     'can'     => 'admin.carreras.index',
                     'text'    => 'Carreras',
@@ -351,14 +351,14 @@ return [
                 //tomar en cuenta
 
             ],
-        ],  
+        ],
 
         [
             'text'    => 'Ciclo 2',
             'icon'    => 'fas fa-fw fa-shield-alt',
             'classes' => 'bg-dark text-white',
             'submenu' => [
-                                
+
                 [
                     'can'     => 'admin.roles.index',
                     'text'    => 'Roles y Permisos',
@@ -420,6 +420,14 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    //'can'     => 'admin..index',
+                    'text'    => 'reportes',
+                    'url'     => '/admin/reportes',
+                    'icon'    => 'fas fa-fw fa-chart-bar',
+                    'classes' => 'bg-blue text-white',
+                ],
+
 
 
             ],

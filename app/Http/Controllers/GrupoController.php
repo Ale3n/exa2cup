@@ -71,6 +71,39 @@ class GrupoController extends Controller
             ->with('icono', 'success');
     }
 
+    public function autoCreate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'cantidad_postulantes' => 'required|integer|min:1',
+            'gestion_id' => 'required|exists:gestions,id',
+            'modalidad' => 'nullable|in:presencial,virtual',
+            'dias' => 'nullable|string|max:20',
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        $modalidad = $request->modalidad ?? 'presencial';
+        $dias = $request->dias;
+
+        $grupos = Grupo::crearGruposAutomaticos(
+            $request->cantidad_postulantes,
+            $request->gestion_id,
+            $modalidad,
+            $dias
+        );
+
+        $codigos = implode(', ', collect($grupos)->pluck('codigo')->toArray());
+
+        return redirect()->route('admin.grupos.index')
+            ->with('mensaje', 'Se crearon ' . count($grupos) . ' grupos: ' . $codigos)
+            ->with('icono', 'success');
+    }
+
     /**
      * Display the specified resource.
      */

@@ -75,12 +75,12 @@ class InscripcionGrupoController extends Controller
         // Validar capacidad máxima del grupo
         $grupo = Grupo::find($request->grupo_id);
 
-        if ($grupo->inscripcionGrupos()->count() >= 60) {
+        if ($grupo->isFull()) {
 
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('mensaje', 'El grupo ya alcanzó el máximo de 60 inscritos.')
+                ->with('mensaje', 'El grupo ya alcanzó el máximo de ' . $grupo->maxCapacity() . ' inscritos.')
                 ->with('icono', 'error');
         }
 
