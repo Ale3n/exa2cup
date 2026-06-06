@@ -105,11 +105,23 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'admin.materias.update'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.materias.destroy'])->syncRoles($admin);
 
+        // --- PERMISOS PARA CALIFICACIONES CRUD---
+        Permission::firstOrCreate(['name' => 'admin.calificaciones.index'])->syncRoles($admin, $administrativo, $docente, $estudiante);
+        Permission::firstOrCreate(['name' => 'admin.calificaciones.create'])->syncRoles($admin, $administrativo, $docente);
+        Permission::firstOrCreate(['name' => 'admin.calificaciones.update'])->syncRoles($admin, $administrativo, $docente);
+        Permission::firstOrCreate(['name' => 'admin.calificaciones.destroy'])->syncRoles($admin);
+
         //--PERMISOS PARA GRUPOS-MATERIAS CRUD---
         Permission::firstOrCreate(['name' => 'admin.grupo-materias.index'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.grupo-materias.create'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.grupo-materias.update'])->syncRoles($admin);
         Permission::firstOrCreate(['name' => 'admin.grupo-materias.destroy'])->syncRoles($admin);
+
+        //--PERMISOS PARA INSCRIPCION-GRUPOS CRUD---
+        Permission::firstOrCreate(['name' => 'admin.inscripcion-grupos.index'])->syncRoles($admin, $administrativo, $docente, $estudiante);
+        Permission::firstOrCreate(['name' => 'admin.inscripcion-grupos.create'])->syncRoles($admin, $administrativo);
+        Permission::firstOrCreate(['name' => 'admin.inscripcion-grupos.update'])->syncRoles($admin, $administrativo);
+        Permission::firstOrCreate(['name' => 'admin.inscripcion-grupos.destroy'])->syncRoles($admin);
 
         
     }

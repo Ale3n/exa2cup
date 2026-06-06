@@ -50,7 +50,9 @@ class RoleController extends Controller
 
         $allowedModules = ['carreras', 'grupos', 'gestiones', 'carrera-gestiones', 'carreragestiones', 'postulantes', 'personal', 'aulas', 
         'materias',
-        'grupo-materias'];
+        'calificaciones',
+        'grupo-materias',
+        'inscripcion-grupos'];
         $allowedActions = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
 
         $permisos = Permission::all()
@@ -122,8 +124,14 @@ class RoleController extends Controller
                     if ($module === 'materias') {
                         return 'Materias';
                     }
+                    if ($module === 'calificaciones') {
+                        return 'Calificaciones';
+                    }
                     if ($module === 'grupo-materias') {
                         return 'Grupo-Materias';
+                    }
+                    if ($module === 'inscripcion-grupos') {
+                        return 'Inscripción-Grupos';
                     }
                 }
 

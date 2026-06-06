@@ -19,4 +19,8 @@ class Grupo extends Model
     {
         return $this->belongsTo(Gestion::class);
     }
+    public function inscripcionGrupos()
+    {
+        return $this->hasMany(InscripcionGrupo::class);
+    }
 }

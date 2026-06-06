@@ -53,4 +53,8 @@ class Postulante extends Model
     {
         return $this->belongsTo(Carrera::class, 'carrera_segunda_id');
     }
+    public function inscripcionGrupos()
+    {
+        return $this->hasMany(InscripcionGrupo::class);
+    }
 }

@@ -87,4 +87,14 @@ Route::post('/admin/grupo-materias/create', [App\Http\Controllers\GrupoMateriaCo
 Route::put('/admin/grupo-materias/{grupo_materia}', [App\Http\Controllers\GrupoMateriaController::class, 'update'])->name('admin.grupo-materias.update')->middleware('auth','can:admin.grupo-materias.update');
 Route::delete('/admin/grupo-materias/{grupo_materia}', [App\Http\Controllers\GrupoMateriaController::class, 'destroy'])->name('admin.grupo-materias.destroy')->middleware('auth','can:admin.grupo-materias.destroy');
 
+//rutas para ---INSCRIPCION-GRUPOS----
+Route::get('/admin/inscripcion-grupos', [App\Http\Controllers\InscripcionGrupoController::class, 'index'])->name('admin.inscripcion-grupos.index')->middleware('auth','can:admin.inscripcion-grupos.index');
+Route::post('/admin/inscripcion-grupos/create', [App\Http\Controllers\InscripcionGrupoController::class, 'store'])->name('admin.inscripcion-grupos.create')->middleware('auth','can:admin.inscripcion-grupos.create');
+Route::put('/admin/inscripcion-grupos/{inscripcion_grupo}', [App\Http\Controllers\InscripcionGrupoController::class, 'update'])->name('admin.inscripcion-grupos.update')->middleware('auth','can:admin.inscripcion-grupos.update');
+Route::delete('/admin/inscripcion-grupos/{inscripcion_grupo}', [App\Http\Controllers\InscripcionGrupoController::class, 'destroy'])->name('admin.inscripcion-grupos.destroy')->middleware('auth','can:admin.inscripcion-grupos.destroy');
 
+//rutas para ---CALIFICAIONES----
+Route::get('/admin/calificaciones', [App\Http\Controllers\CalificacionController::class, 'index'])->name('admin.calificaciones.index')->middleware('auth','can:admin.calificaciones.index');
+Route::post('/admin/calificaciones/create', [App\Http\Controllers\CalificacionController::class, 'store'])->name('admin.calificaciones.create')->middleware('auth','can:admin.calificaciones.create');
+Route::put('/admin/calificaciones/{calificacion}', [App\Http\Controllers\CalificacionController::class, 'update'])->name('admin.calificaciones.update')->middleware('auth','can:admin.calificaciones.update');
+Route::delete('/admin/calificaciones/{calificacion}', [App\Http\Controllers\CalificacionController::class, 'destroy'])->name('admin.calificaciones.destroy')->middleware('auth','can:admin.calificaciones.destroy');

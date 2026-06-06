@@ -399,6 +399,20 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
+                [
+                    'can'     => 'admin.inscripcion-grupos.index',
+                    'text'    => 'Gestionar Inscripciones',
+                    'url'     => '/admin/inscripcion-grupos',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
+                [
+                    'can'     => 'admin.calificaciones.index',
+                    'text'    => 'Gestionar Calificaciones',
+                    'url'     => '/admin/calificaciones',
+                    'icon'    => 'fas fa-fw fa-users-cog',
+                    'classes' => 'bg-blue text-white',
+                ],
 
 
             ],
