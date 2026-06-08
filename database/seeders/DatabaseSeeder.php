@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             ['codigo' => '187-4'], // Condición de búsqueda (llave única)
             [
                 'nombre' => 'Ingeniería en Sistemas',
+                'capacidad' => 30,
                 'estado' => 'activo'
             ]
         );
@@ -47,6 +48,7 @@ class DatabaseSeeder extends Seeder
             ['codigo' => '187-3'],
             [
                 'nombre' => 'Ingeniería Informática',
+                'capacidad' => 30,
                 'estado' => 'activo'
             ]
         );
@@ -56,6 +58,7 @@ class DatabaseSeeder extends Seeder
             ['codigo' => '323-0'],
             [
                 'nombre' => 'Ingeniería en Robótica',
+                'capacidad' => 30,
                 'estado' => 'activo'
             ]
         );
@@ -65,6 +68,7 @@ class DatabaseSeeder extends Seeder
             ['codigo' => '187-5'],
             [
                 'nombre' => 'Ingeniería en Redes y Telecomunicaciones',
+                'capacidad' => 30,
                 'estado' => 'activo'
             ]
         );

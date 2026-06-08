@@ -67,6 +67,21 @@
                                                         @enderror
                                                     </div>
                                                     <div class="form-group">
+                                                        <label for="">Capacidad</label><b> (*)</b>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+                                                            </div>
+                                                            <input type="number" class="form-control" name="capacidad_create"
+                                                                value="{{ old('capacidad_create', 50) }}"
+                                                                min="1"
+                                                                placeholder="Número de estudiantes" required>
+                                                        </div>
+                                                        @error('capacidad_create')
+                                                            <small style="color: red;">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
                                                     <label for="">Estado de la carrera</label><b> (*)</b>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -118,6 +133,7 @@
                                 <th>Nro</th>
                                 <th>Nombre</th>
                                  <th>Código</th>
+                                 <th>Capacidad</th>
                                  <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -128,6 +144,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $carrera->nombre }}</td>
                                     <td>{{ $carrera->codigo }}</td>
+                                    <td>{{ $carrera->capacidad }}</td>
                                     <td>{{ $carrera->estado }}</td>
                                     <td>
 
@@ -255,6 +272,27 @@
 
                                                                 </div>
 
+                                                                <!-- Capacidad -->
+                                                                <div class="form-group">
+                                                                    <label>Capacidad</label><b> (*)</b>
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">
+                                                                                <i class="fas fa-layer-group"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                        <input type="number"
+                                                                            class="form-control"
+                                                                            name="capacidad"
+                                                                            value="{{ old('capacidad', $carrera->capacidad) }}"
+                                                                            min="1"
+                                                                            placeholder="Número de estudiantes"
+                                                                            required>
+                                                                    </div>
+                                                                    @error('capacidad')
+                                                                        <small style="color:red;">{{ $message }}</small>
+                                                                    @enderror
+                                                                </div>
 
                                                                 <!-- Estado -->
                                                                 <div class="form-group">

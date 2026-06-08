@@ -200,6 +200,60 @@ class ReporteController extends Controller
         );
     }
 
+    public function cuposAceptados()
+    {
+        $inscripciones = InscripcionGrupo::with([
+            'postulante.carreraPrimera',
+            'postulante.carreraSegunda',
+            'grupo'
+        ])->get();
+
+        $candidatos = $inscripciones->filter(function ($inscripcion) {
+            return $inscripcion->postulante &&
+                $inscripcion->postulante->carreraPrimera &&
+                $inscripcion->estadoFinal() === 'APROBADO';
+        })->map(function ($inscripcion) {
+            return [
+                'inscripcion' => $inscripcion,
+                'postulante' => $inscripcion->postulante,
+                'promedio' => $inscripcion->promedioGeneral(),
+                'carreraPrimera' => $inscripcion->postulante->carreraPrimera,
+                'carreraSegunda' => $inscripcion->postulante->carreraSegunda,
+            ];
+        });
+
+        $admitidosPrimera = collect();
+        $rechazadosPrimera = collect();
+
+        foreach ($candidatos->groupBy(fn ($row) => $row['carreraPrimera']->id) as $grupoId => $grupo) {
+            $capacidad = $grupo->first()['carreraPrimera']->capacidad ?? 0;
+            $ordenados = $grupo->sortByDesc('promedio')->values();
+
+            $admitidosPrimera = $admitidosPrimera->concat($ordenados->take($capacidad));
+            $rechazadosPrimera = $rechazadosPrimera->concat($ordenados->slice($capacidad));
+        }
+
+        $admitidosSegunda = collect();
+
+        foreach ($rechazadosPrimera->groupBy(fn ($row) => optional($row['carreraSegunda'])->id) as $segId => $grupo) {
+            $carreraSegunda = $grupo->first()['carreraSegunda'];
+
+            if (! $carreraSegunda) {
+                continue;
+            }
+
+            $capacidadSegunda = $carreraSegunda->capacidad ?? 0;
+            $ordenadosSegunda = $grupo->sortByDesc('promedio')->values();
+
+            $admitidosSegunda = $admitidosSegunda->concat($ordenadosSegunda->take($capacidadSegunda));
+        }
+
+        return view(
+            'admin.reportes.cupos_aceptado',
+            compact('admitidosPrimera', 'admitidosSegunda')
+        );
+    }
+
     public function gruposHabilitados()
     {
         $grupos = Grupo::all();

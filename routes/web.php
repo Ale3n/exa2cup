@@ -144,6 +144,9 @@ Route::prefix('admin/reportes')
         Route::get('/grupos-aprobados', [ReporteController::class, 'gruposAprobados'])
             ->name('gruposAprobados');
 
+        Route::get('/cupos-aceptados', [ReporteController::class, 'cuposAceptados'])
+            ->name('cuposAceptados');
+
         Route::get(
             '/grupos-habilitados',
             [ReporteController::class, 'gruposHabilitados']
