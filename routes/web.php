@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\AnuncioController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -31,6 +32,7 @@ Route::delete('/admin/gestiones/{gestion}', [App\Http\Controllers\GestionControl
 Route::get('/admin/grupos', [App\Http\Controllers\GrupoController::class, 'index'])->name('admin.grupos.index')->middleware('auth', 'can:admin.grupos.index');
 Route::post('/admin/grupos/create', [App\Http\Controllers\GrupoController::class, 'store'])->name('admin.grupos.create')->middleware('auth', 'can:admin.grupos.create');
 Route::post('/admin/grupos/auto-create', [App\Http\Controllers\GrupoController::class, 'autoCreate'])->name('admin.grupos.autoCreate')->middleware('auth', 'can:admin.grupos.create');
+Route::post('/admin/grupos/auto-create-from-postulantes', [App\Http\Controllers\GrupoController::class, 'autoCreateFromPostulantes'])->name('admin.grupos.autoCreateFromPostulantes')->middleware('auth', 'can:admin.grupos.create');
 Route::put('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'update'])->name('admin.grupos.update')->middleware('auth', 'can:admin.grupos.update');
 Route::delete('/admin/grupos/{grupo}', [App\Http\Controllers\GrupoController::class, 'destroy'])->name('admin.grupos.destroy')->middleware('auth', 'can:admin.grupos.destroy');
 
@@ -104,6 +106,15 @@ Route::delete('/admin/calificaciones/{calificacion}', [App\Http\Controllers\Cali
 //rutas para ---BITACORA----
 Route::get('/admin/bitacora', [App\Http\Controllers\BitacoraController::class, 'index'])->name('admin.bitacora.index')->middleware(['auth', 'verified']);
 
+
+//anuncios
+Route::resource('anuncios', AnuncioController::class);
+Route::post(
+    '/anuncios/leido',
+    [AnuncioController::class, 'marcarLeido']
+)->name('anuncios.leido');
+
+
 //reporte
 Route::prefix('admin/reportes')
     ->name('admin.reportes.')
@@ -136,3 +147,6 @@ Route::prefix('admin/reportes')
         )
             ->name('gruposHabilitados');
     });
+
+
+

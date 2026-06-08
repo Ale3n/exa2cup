@@ -421,6 +421,12 @@ return [
                     'classes' => 'bg-blue text-white',
                 ],
                 [
+                    'text'    => 'Anuncios',
+                    'route'   => 'anuncios.create',
+                    'icon'    => 'fas fa-fw fa-bullhorn',
+                    'classes' => 'bg-blue text-white',
+                ],
+                [
                     //'can'     => 'admin..index',
                     'text'    => 'reportes',
                     'url'     => '/admin/reportes',

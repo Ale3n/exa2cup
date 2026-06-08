@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Postulante;
 
 class Grupo extends Model
 {
@@ -76,5 +77,16 @@ class Grupo extends Model
         }
 
         return $gruposCreados;
+    }
+
+    public static function crearGruposAutomaticosPorPostulantes(int $gestionId, string $modalidad = 'presencial', ?string $dias = null): array
+    {
+        $cantidadPostulantes = Postulante::count();
+
+        if ($cantidadPostulantes <= 0) {
+            return [];
+        }
+
+        return self::crearGruposAutomaticos($cantidadPostulantes, $gestionId, $modalidad, $dias);
     }
 }

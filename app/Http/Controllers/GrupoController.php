@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bitacora;
 use App\Models\Grupo;
+use App\Models\Postulante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Gestion;
@@ -101,6 +102,43 @@ class GrupoController extends Controller
 
         return redirect()->route('admin.grupos.index')
             ->with('mensaje', 'Se crearon ' . count($grupos) . ' grupos: ' . $codigos)
+            ->with('icono', 'success');
+    }
+
+    public function autoCreateFromPostulantes(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'gestion_id' => 'required|exists:gestions,id',
+            'modalidad' => 'nullable|in:presencial,virtual',
+            'dias' => 'nullable|string|max:20',
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput();
+        }
+
+        $modalidad = $request->modalidad ?? 'presencial';
+        $dias = $request->dias;
+
+        $grupos = Grupo::crearGruposAutomaticosPorPostulantes(
+            $request->gestion_id,
+            $modalidad,
+            $dias
+        );
+
+        if (empty($grupos)) {
+            return redirect()->route('admin.grupos.index')
+                ->with('mensaje', 'No hay postulantes registrados para crear grupos.')
+                ->with('icono', 'warning');
+        }
+
+        $codigos = implode(', ', collect($grupos)->pluck('codigo')->toArray());
+
+        return redirect()->route('admin.grupos.index')
+            ->with('mensaje', 'Se crearon ' . count($grupos) . ' grupos con ' . Postulante::count() . ' postulantes: ' . $codigos)
             ->with('icono', 'success');
     }
 

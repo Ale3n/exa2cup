@@ -31,4 +31,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function anuncios()
+    {
+        return $this->belongsToMany(Anuncio::class);
+    }
 }
