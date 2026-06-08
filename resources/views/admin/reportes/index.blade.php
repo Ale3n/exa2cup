@@ -30,9 +30,33 @@
         </a>
     </div>
     <div class="col-md-3">
+        <a href="{{ route('admin.reportes.generalPostulantes') }}"
+            class="btn btn-secondary btn-block">
+            Postulantes
+        </a>
+    </div>
+    <div class="col-md-3">
         <a href="{{ route('admin.reportes.gruposHabilitados') }}"
             class="btn btn-info btn-block">
             Grupos Habilitados
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a href="{{ route('admin.reportes.gruposAprobados') }}"
+            class="btn btn-dark btn-block">
+            Grupos con más Aprobados
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a href="{{ route('admin.reportes.cuposAceptados') }}"
+            class="btn btn-secondary btn-block">
+            Cupos aceptados
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a href="{{ route('admin.reportes.docentesGrupo') }}"
+            class="btn btn-primary btn-block">
+            Docentes por Grupo
         </a>
     </div>
     <div class="col-md-3">

@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('nombre');
             $table->string('codigo')->unique();
+            $table->integer('capacidad');
 
             $table->string('estado')->default('activo');
             $table->timestamps();

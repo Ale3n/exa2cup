@@ -132,6 +132,9 @@ Route::prefix('admin/reportes')
         Route::get('/promedios', [ReporteController::class, 'promedios'])
             ->name('promedios');
 
+        Route::get('/general-postulantes', [ReporteController::class, 'generalPostulantes'])
+            ->name('generalPostulantes');
+
         Route::get('/estadisticas-materia', [ReporteController::class, 'estadisticasMateria'])
             ->name('estadisticasMateria');
 
@@ -140,6 +143,9 @@ Route::prefix('admin/reportes')
 
         Route::get('/grupos-aprobados', [ReporteController::class, 'gruposAprobados'])
             ->name('gruposAprobados');
+
+        Route::get('/cupos-aceptados', [ReporteController::class, 'cuposAceptados'])
+            ->name('cuposAceptados');
 
         Route::get(
             '/grupos-habilitados',

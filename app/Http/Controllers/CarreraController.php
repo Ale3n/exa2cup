@@ -35,6 +35,7 @@ class CarreraController extends Controller
          $request->validate([
         'nombre_create' => 'required|max:255',
         'codigo_create' => 'required|max:50|unique:carreras,codigo',
+        'capacidad_create' => 'required|integer|min:1',
         'estado_create' => 'required',
         ]);
 
@@ -42,6 +43,7 @@ class CarreraController extends Controller
 
         $carrera->nombre = $request->nombre_create;
         $carrera->codigo = $request->codigo_create;
+        $carrera->capacidad = $request->capacidad_create;
         $carrera->estado = $request->estado_create;
 
         $carrera->save();
@@ -84,7 +86,8 @@ class CarreraController extends Controller
         $validate = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
             'codigo' => 'required|max:50|unique:carreras,codigo,' . $carrera->id,
-            'estado' => 'required|in:activo,inactivo',
+            'capacidad' => 'required|integer|min:1',
+            'estado' => 'required|in:activo,cerrado',
         ]);
 
         // Si falla la validación
@@ -99,6 +102,7 @@ class CarreraController extends Controller
         // Actualizar datos
         $carrera->nombre = $request->nombre;
         $carrera->codigo = $request->codigo;
+        $carrera->capacidad = $request->capacidad;
         $carrera->estado = $request->estado;
 
         $carrera->save();
