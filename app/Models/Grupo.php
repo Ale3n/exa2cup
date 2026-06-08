@@ -89,4 +89,40 @@ class Grupo extends Model
 
         return self::crearGruposAutomaticos($cantidadPostulantes, $gestionId, $modalidad, $dias);
     }
+    public static function buscarOCrearGrupoDisponible(Grupo $grupoBase): Grupo
+{
+    // Buscar un grupo de la misma gestión, mismos días y misma modalidad que tenga cupo
+    $grupoDisponible = self::where('gestion_id', $grupoBase->gestion_id)
+        ->where('dias', $grupoBase->dias)
+        ->where('modalidad', $grupoBase->modalidad)
+        ->where('inscritos', '<', self::CAPACITY)
+        ->orderBy('id')
+        ->first();
+
+    if ($grupoDisponible) {
+        return $grupoDisponible;
+    }
+
+    // Si no existe grupo con cupo, crear uno nuevo automáticamente
+    $codigoBase = preg_replace('/-\d+$/', '', $grupoBase->codigo);
+
+    // Para que no pase de 10 caracteres, porque en la BD codigo es string(10)
+    $codigoBase = substr($codigoBase, 0, 7);
+
+    $numero = 2;
+
+    do {
+        $codigoNuevo = $codigoBase . '-' . $numero;
+        $numero++;
+    } while (self::where('codigo', $codigoNuevo)->exists());
+
+    return self::create([
+        'gestion_id' => $grupoBase->gestion_id,
+        'codigo' => $codigoNuevo,
+        'dias' => $grupoBase->dias,
+        'modalidad' => $grupoBase->modalidad,
+        'inscritos' => 0,
+    ]);
+    ///////RAMA_Alex
+}
 }
