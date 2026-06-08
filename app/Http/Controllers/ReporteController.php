@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\InscripcionGrupo;
 use App\Models\Grupo;
 use App\Models\Materia;
+use App\Models\GrupoMateria;
+use App\Models\Postulante;
 
 class ReporteController extends Controller
 {
@@ -79,6 +81,20 @@ class ReporteController extends Controller
         );
     }
 
+    public function generalPostulantes()
+    {
+        $postulantes = Postulante::with([
+            'usuario',
+            'carreraPrimera',
+            'carreraSegunda'
+        ])->orderBy('apellidos')->get();
+
+        return view(
+            'admin.reportes.generalpostu',
+            compact('postulantes')
+        );
+    }
+
     public function estadisticasMateria()
     {
         $materias = Materia::all();
@@ -127,15 +143,60 @@ class ReporteController extends Controller
 
     public function docentesGrupo()
     {
+        $grupoMaterias = GrupoMateria::with([
+            'grupo.gestion',
+            'materia',
+            'personal'
+        ])->get();
+
+        $grupoMateriasGrouped = $grupoMaterias->groupBy('grupo_id');
+
         return view(
-            'admin.reportes.docentes_grupo'
+            'admin.reportes.docentes_grupo',
+            compact('grupoMateriasGrouped')
         );
     }
 
     public function gruposAprobados()
     {
+        $inscripciones = InscripcionGrupo::with(['grupo.gestion'])->get();
+
+        $groupStats = [];
+
+        foreach ($inscripciones as $inscripcion) {
+            $grupo = $inscripcion->grupo;
+
+            if (! $grupo) {
+                continue;
+            }
+
+            $groupId = $grupo->id;
+
+            if (! isset($groupStats[$groupId])) {
+                $groupStats[$groupId] = [
+                    'grupo' => $grupo,
+                    'gestion' => $grupo->gestion,
+                    'approved_count' => 0,
+                    'total_inscritos' => 0,
+                ];
+            }
+
+            $groupStats[$groupId]['total_inscritos']++;
+
+            if ($inscripcion->estadoFinal() === 'APROBADO') {
+                $groupStats[$groupId]['approved_count']++;
+            }
+        }
+
+        $groupsByGestion = collect($groupStats)
+            ->groupBy(fn ($group) => $group['gestion']->id ?? 0)
+            ->map(fn ($groups) => $groups->sortByDesc('approved_count'));
+
+        $topGroupsByGestion = $groupsByGestion->map(fn ($groups) => $groups->first());
+
         return view(
-            'admin.reportes.grupos_aprobados'
+            'admin.reportes.grupos_aprobados',
+            compact('topGroupsByGestion')
         );
     }
 

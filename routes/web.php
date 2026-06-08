@@ -132,6 +132,9 @@ Route::prefix('admin/reportes')
         Route::get('/promedios', [ReporteController::class, 'promedios'])
             ->name('promedios');
 
+        Route::get('/general-postulantes', [ReporteController::class, 'generalPostulantes'])
+            ->name('generalPostulantes');
+
         Route::get('/estadisticas-materia', [ReporteController::class, 'estadisticasMateria'])
             ->name('estadisticasMateria');
 
