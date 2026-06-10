@@ -26,7 +26,7 @@ class Grupo extends Model
         return $this->hasMany(InscripcionGrupo::class);
     }
 
-    public const CAPACITY = 70;
+    public const CAPACITY = 25;
 
     public function maxCapacity()
     {
