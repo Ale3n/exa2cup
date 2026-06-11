@@ -195,12 +195,14 @@
 
                                             </div>
 
-                                            <input type="text"
-                                                   name="ci"
-                                                   class="form-control"
-                                                   value="{{ old('ci') }}"
-                                                   placeholder="Ingrese CI..."
-                                                   required>
+                                              <input type="number"
+                                                  name="ci"
+                                                  class="form-control"
+                                                  value="{{ old('ci') }}"
+                                                  placeholder="Ingrese CI..."
+                                                  min="0"
+                                                  step="1"
+                                                  required>
 
                                         </div>
 
@@ -320,12 +322,14 @@
 
                                             </div>
 
-                                            <input type="text"
-                                                   name="telefono"
-                                                   class="form-control"
-                                                   value="{{ old('telefono') }}"
-                                                   placeholder="Ingrese teléfono..."
-                                                   required>
+                                              <input type="number"
+                                                  name="telefono"
+                                                  class="form-control"
+                                                  value="{{ old('telefono') }}"
+                                                  placeholder="Ingrese teléfono..."
+                                                  min="0"
+                                                  step="1"
+                                                  required>
 
                                         </div>
 

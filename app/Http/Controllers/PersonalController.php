@@ -49,18 +49,17 @@ class PersonalController extends Controller
 
             'nombres' => 'required',
             'apellidos' => 'required',
-            'ci' => 'required|unique:personals,ci',
+            'ci' => ['required', 'unique:personals,ci', 'regex:/^[0-9]+$/'],
 
             'fecha_nacimiento' => 'required',
-            'telefono' => 'required',
+            'telefono' => ['required', 'regex:/^[0-9]+$/'],
             'direccion' => 'required',
             'profesion' => 'required|exists:materias,nombre',
 
             'email' => 'required|email|unique:users,email',
-
-            'es_profesional_area' => 'nullable|boolean',
-            'tiene_maestria' => 'nullable|boolean',
-            'tiene_diplomado_educ_superior' => 'nullable|boolean',
+            'es_profesional_area' => 'accepted',
+            'tiene_maestria' => 'accepted',
+            'tiene_diplomado_educ_superior' => 'accepted',
         ]);
 
         $usuario = new User();
@@ -140,10 +139,10 @@ class PersonalController extends Controller
             'nombres' => 'required',
             'apellidos' => 'required',
 
-            'ci' => 'required|unique:personals,ci,' . $id,
+            'ci' => ['required', 'unique:personals,ci,' . $id, 'regex:/^[0-9]+$/'],
 
             'fecha_nacimiento' => 'required',
-            'telefono' => 'required',
+            'telefono' => ['required', 'regex:/^[0-9]+$/'],
             'direccion' => 'required',
             'profesion' => 'required|exists:materias,nombre',
 

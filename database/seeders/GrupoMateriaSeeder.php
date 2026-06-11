@@ -57,36 +57,80 @@ class GrupoMateriaSeeder extends Seeder
 
         // Para cada grupo, asignar las 4 materias
         foreach ($grupos as $grupoIndex => $grupo) {
-            // Asignar un aula específica a cada grupo (ciclando entre las aulas disponibles)
-            $aula = null;
-            if ($aulas->count() > 0) {
-                $aula = $aulas[$grupoIndex % $aulas->count()];
-            }
-
             foreach ($materias as $m) {
                 $materia = Materia::where('codigo', $m['codigo'])->first();
                 if (!$materia) {
                     continue;
                 }
 
-                // Buscar un personal con la profesión relacionada, si no existe tomar el primero disponible
-                $personal = Personal::where('profesion', $m['profesion'])->first();
-                if (!$personal) {
-                    $personal = Personal::first();
+                // Buscar personales cuya profesión coincida con el nombre de la materia
+                $allPersonales = Personal::all();
+                $candidates = $allPersonales->filter(function ($p) use ($materia) {
+                    return trim(strtolower($p->profesion)) === trim(strtolower($materia->nombre));
+                });
+
+                // Si no hay especialistas, permitir cualquier personal como último recurso
+                if ($candidates->count() === 0) {
+                    $candidates = $allPersonales;
                 }
 
-                GrupoMateria::firstOrCreate(
-                    [
-                        'grupo_id' => $grupo->id,
-                        'materia_id' => $materia->id,
-                    ],
-                    [
-                        'personal_id' => $personal ? $personal->id : null,
-                        'aula_id' => $aula ? $aula->id : null,
-                        'hora_inicio' => $m['hora_inicio'],
-                        'hora_fin' => $m['hora_fin'],
-                    ]
-                );
+                $assigned = false;
+
+                foreach ($candidates as $personal) {
+                    // Respetar límite de 4 grupos distintos por docente (como en controller)
+                    $gruposAsignados = GrupoMateria::where('personal_id', $personal->id)
+                        ->pluck('grupo_id')
+                        ->unique();
+
+                    if (! $gruposAsignados->contains($grupo->id) && $gruposAsignados->count() >= 4) {
+                        continue; // este docente ya tiene 4 grupos distintos
+                    }
+
+                    // Evitar choque de horario por docente
+                    $existeChoqueDocente = GrupoMateria::where('personal_id', $personal->id)
+                        ->where('hora_inicio', '<', $m['hora_fin'])
+                        ->where('hora_fin', '>', $m['hora_inicio'])
+                        ->exists();
+
+                    if ($existeChoqueDocente) {
+                        continue; // este docente tiene choque de horario
+                    }
+
+                    // Buscar un aula disponible (sin choque de horario)
+                    $chosenAula = null;
+                    foreach ($aulas as $aula) {
+                        $existeChoqueAula = GrupoMateria::where('aula_id', $aula->id)
+                            ->where('hora_inicio', '<', $m['hora_fin'])
+                            ->where('hora_fin', '>', $m['hora_inicio'])
+                            ->exists();
+
+                        if (! $existeChoqueAula) {
+                            $chosenAula = $aula;
+                            break;
+                        }
+                    }
+
+                    // Crear o obtener la asignación si aún no existe
+                    GrupoMateria::firstOrCreate(
+                        [
+                            'grupo_id' => $grupo->id,
+                            'materia_id' => $materia->id,
+                        ],
+                        [
+                            'personal_id' => $personal ? $personal->id : null,
+                            'aula_id' => $chosenAula ? $chosenAula->id : null,
+                            'hora_inicio' => $m['hora_inicio'],
+                            'hora_fin' => $m['hora_fin'],
+                        ]
+                    );
+
+                    $assigned = true;
+                    break; // asignada la materia para este grupo
+                }
+
+                if (! $assigned) {
+                    $this->command->info('No se encontró personal/aula disponible para materia: ' . ($materia->nombre ?? $m['codigo']) . ' en grupo ' . $grupo->codigo . '.');
+                }
             }
         }
     }

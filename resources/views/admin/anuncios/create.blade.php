@@ -41,11 +41,14 @@
             <select name="rol_destino"
                     class="form-control">
 
+                <option value="DOCENTE" {{ old('rol_destino') == 'DOCENTE' ? 'selected' : '' }}>
+                    DOCENTE
+                </option>
+                <option value="ADMINISTRATIVO" {{ old('rol_destino') == 'ADMINISTRATIVO' ? 'selected' : '' }}>
+                    ADMINISTRATIVO
+                </option>
                 <option value="ESTUDIANTE" {{ old('rol_destino') == 'ESTUDIANTE' ? 'selected' : '' }}>
                     ESTUDIANTE
-                </option>
-                <option value="Postulante" {{ old('rol_destino') == 'Postulante' ? 'selected' : '' }}>
-                    Postulante
                 </option>
 
             </select>

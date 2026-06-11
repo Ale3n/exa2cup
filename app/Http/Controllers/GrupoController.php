@@ -168,6 +168,7 @@ class GrupoController extends Controller
             'codigo'      => 'required|string|max:10|unique:grupos,codigo,' . $grupo->id,
             'dias'        => 'required|string|max:20',
             'modalidad'   => 'required|in:presencial,virtual',
+            'inscritos'   => 'nullable|integer|min:0',
         ]);
 
         if ($validate->fails()) {
@@ -182,6 +183,7 @@ class GrupoController extends Controller
         $grupo->codigo      = $request->codigo;
         $grupo->dias        = $request->dias;
         $grupo->modalidad   = $request->modalidad;
+        $grupo->inscritos   = $request->inscritos ?? $grupo->inscritos;
         $grupo->save();
 
         Bitacora::create([

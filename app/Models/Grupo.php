@@ -87,8 +87,46 @@ class Grupo extends Model
             return [];
         }
 
-        return self::crearGruposAutomaticos($cantidadPostulantes, $gestionId, $modalidad, $dias);
+        $gruposNecesarios = (int) ceil($cantidadPostulantes / self::CAPACITY);
+
+        $query = self::where('gestion_id', $gestionId)
+            ->where('modalidad', $modalidad);
+
+        if ($dias !== null) {
+            $query->where('dias', $dias);
+        }
+
+        $gruposActuales = $query->count();
+
+        if ($gruposActuales >= $gruposNecesarios) {
+            return [];
+        }
+
+        $gruposCreados = [];
+        for ($i = $gruposActuales; $i < $gruposNecesarios; $i++) {
+            $codigo = self::generarCodigoGrupo($i);
+            $originalCodigo = $codigo;
+            $suffix = 1;
+
+            while (self::where('codigo', $codigo)->exists()) {
+                $codigo = $originalCodigo . '_' . $suffix;
+                $suffix++;
+            }
+
+            $grupo = self::create([
+                'gestion_id' => $gestionId,
+                'codigo' => $codigo,
+                'dias' => $dias,
+                'modalidad' => $modalidad,
+                'inscritos' => 0,
+            ]);
+
+            $gruposCreados[] = $grupo;
+        }
+
+        return $gruposCreados;
     }
+
     public static function buscarOCrearGrupoDisponible(Grupo $grupoBase): Grupo
 {
     // Buscar un grupo de la misma gestión, mismos días y misma modalidad que tenga cupo

@@ -54,6 +54,8 @@ class Segundafila extends Seeder
                 $ins->grupo_id = $grupoId;
                 $ins->fecha_eleccion = date('Y-m-d');
                 $ins->save();
+
+                Grupo::where('id', $grupoId)->increment('inscritos');
             }
 
             $i++;

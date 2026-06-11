@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Carrera;
 use App\Models\Bitacora;
+use App\Models\Grupo;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -56,7 +57,7 @@ class PostulanteController extends Controller
 
             'fecha_nacimiento'             => 'required|date',
 
-            'telefono'                     => 'required|string|max:20',
+            'telefono'                     => ['required', 'regex:/^[0-9]+$/'],
 
             'direccion'                    => 'required|string|max:255',
 
@@ -164,6 +165,15 @@ class PostulanteController extends Controller
 
         $postulante->save();
 
+        $primerGrupo = Grupo::first();
+        if ($primerGrupo) {
+            Grupo::crearGruposAutomaticosPorPostulantes(
+                $primerGrupo->gestion_id,
+                $primerGrupo->modalidad,
+                $primerGrupo->dias
+            );
+        }
+
         Bitacora::create([
             'usuario' => auth()->user()->name ?? 'Sistema',
             'accion' => 'Creó el postulante ' . $postulante->apellidos . ' ' . $postulante->nombres . ' (CI ' . $postulante->ci . ')',
@@ -239,12 +249,11 @@ class PostulanteController extends Controller
 
             'apellidos'                    => 'required|string|max:100',
 
-            'ci'                           =>
-                'required|unique:postulantes,ci,' . $id,
+            'ci'                           => ['required', 'unique:postulantes,ci,' . $id, 'regex:/^[0-9]+$/'],
 
             'fecha_nacimiento'             => 'required|date',
 
-            'telefono'                     => 'required|string|max:20',
+            'telefono'                     => ['required', 'regex:/^[0-9]+$/'],
 
             'direccion'                    => 'required|string|max:255',
 

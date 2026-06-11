@@ -61,10 +61,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+        $user = User::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        // Asignar rol automáticamente al registrarse
+        $user->assignRole('ADMINISTRADOR'); // o 'cliente', 'user', el nombre que uses
+
+        return $user;
     }
 }

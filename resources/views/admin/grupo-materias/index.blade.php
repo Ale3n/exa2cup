@@ -585,5 +585,26 @@
     </div>
 
 </div>
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        @if (session('mensaje'))
+            Swal.fire({
+                icon: "{{ session('icono', 'info') }}",
+                title: "{{ session('mensaje') }}",
+                showConfirmButton: true,
+                timer: 3000
+            });
+        @endif
+    </script>
+
+    @if (session('modal_id'))
+        <script>
+            $(document).ready(function () {
+                $('#modal-editar-{{ session('modal_id') }}').modal('show');
+            });
+        </script>
+    @endif
+@endsection
 @stop

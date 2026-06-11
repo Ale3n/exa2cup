@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 @section('title', 'Bitácora')
 @section('content_header')
-    <h1>Registro de Actividades (Vitácora)</h1>
+    <h1>Registro de Actividades (Bitácora)</h1>
     <hr>
 @stop
 @section('content')

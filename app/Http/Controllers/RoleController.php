@@ -61,8 +61,11 @@ class RoleController extends Controller
         'calificaciones',
         'grupo-materias',
         'inscripcion-grupos',
+        'anuncios',
+        'reportes',
         'bitacora'];
-        $allowedActions = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
+        $allowedActions = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy',
+            'aprobados', 'reprobados', 'promedios', 'generalpostu', 'gruposHabilitados', 'gruposAprobados', 'cuposAceptados', 'docentesGrupo', 'estadisticasMateria'];
 
         $permisos = Permission::all()
             ->filter(function ($permiso) use ($rol, $allowedModules, $allowedActions) {
@@ -141,6 +144,12 @@ class RoleController extends Controller
                     }
                     if ($module === 'inscripcion-grupos') {
                         return 'Inscripción-Grupos';
+                    }
+                    if ($module === 'anuncios') {
+                        return 'Anuncios';
+                    }
+                    if ($module === 'reportes') {
+                        return 'Reportes';
                     }
                     if ($module === 'bitacora') {
                         return 'Bitácora';

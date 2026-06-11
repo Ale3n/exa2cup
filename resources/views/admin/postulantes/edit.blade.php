@@ -188,12 +188,14 @@
 
                                             </div>
 
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="ci"
-                                                   value="{{ old('ci', $postulante->ci) }}"
-                                                   placeholder="Ingrese CI..."
-                                                   required>
+                                              <input type="number"
+                                                  class="form-control"
+                                                  name="ci"
+                                                  value="{{ old('ci', $postulante->ci) }}"
+                                                  placeholder="Ingrese CI..."
+                                                  min="0"
+                                                  step="1"
+                                                  required>
 
                                         </div>
 
@@ -313,12 +315,14 @@
 
                                             </div>
 
-                                            <input type="text"
-                                                   class="form-control"
-                                                   name="telefono"
-                                                   value="{{ old('telefono', $postulante->telefono) }}"
-                                                   placeholder="Ingrese teléfono..."
-                                                   required>
+                                              <input type="number"
+                                                  class="form-control"
+                                                  name="telefono"
+                                                  value="{{ old('telefono', $postulante->telefono) }}"
+                                                  placeholder="Ingrese teléfono..."
+                                                  min="0"
+                                                  step="1"
+                                                  required>
 
                                         </div>
 

@@ -32,7 +32,7 @@ class AnuncioController extends Controller
         $data = $request->validate([
             'titulo' => 'required|string|max:255',
             'mensaje' => 'required|string',
-            'rol_destino' => 'required|string|in:Postulante,ESTUDIANTE',
+            'rol_destino' => 'required|string|in:DOCENTE,ADMINISTRATIVO,ESTUDIANTE',
         ]);
 
         $anuncio = Anuncio::create([

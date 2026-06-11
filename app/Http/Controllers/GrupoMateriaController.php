@@ -111,6 +111,37 @@ class GrupoMateriaController extends Controller
                 ->with('mensaje', 'La materia ya está asignada a este grupo.')
                 ->with('icono', 'error');
         }
+        // Evitar choque de horario por aula
+        // Ejemplo:
+        // Aula 12 de 07:00 a 08:30 no puede volver a usarse de 07:00 a 08:30
+        // Tampoco de 07:30 a 09:00 porque se cruza.
+        $existeChoqueAula = GrupoMateria::where('aula_id', $request->aula_id)
+            ->where('hora_inicio', '<', $request->hora_fin)
+            ->where('hora_fin', '>', $request->hora_inicio)
+            ->exists();
+
+        if ($existeChoqueAula) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('mensaje', 'El aula seleccionada ya está ocupada en ese horario.')
+                ->with('icono', 'error');
+        }
+
+        // Evitar choque de horario por docente
+        // El mismo docente no puede estar en dos grupos al mismo tiempo.
+        $existeChoqueDocente = GrupoMateria::where('personal_id', $request->personal_id)
+            ->where('hora_inicio', '<', $request->hora_fin)
+            ->where('hora_fin', '>', $request->hora_inicio)
+            ->exists();
+
+        if ($existeChoqueDocente) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('mensaje', 'El docente seleccionado ya tiene una clase en ese horario.')
+                ->with('icono', 'error');
+        }
 
         $grupoMateria = new GrupoMateria();
 
@@ -214,6 +245,39 @@ class GrupoMateriaController extends Controller
                 ->withInput()
                 ->with('modal_id', $grupoMateria->id)
                 ->with('mensaje', 'La materia ya está asignada a este grupo.')
+                ->with('icono', 'error');
+        }
+        // Evitar choque de horario por aula
+        // Excluye el registro actual para que no choque consigo mismo al editar
+        $existeChoqueAula = GrupoMateria::where('aula_id', $request->aula_id)
+            ->where('id', '!=', $grupoMateria->id)
+            ->where('hora_inicio', '<', $request->hora_fin)
+            ->where('hora_fin', '>', $request->hora_inicio)
+            ->exists();
+
+        if ($existeChoqueAula) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('modal_id', $grupoMateria->id)
+                ->with('mensaje', 'El aula seleccionada ya está ocupada en ese horario.')
+                ->with('icono', 'error');
+        }
+
+        // Evitar choque de horario por docente
+        // El mismo docente no puede estar asignado a dos clases al mismo tiempo
+        $existeChoqueDocente = GrupoMateria::where('personal_id', $request->personal_id)
+            ->where('id', '!=', $grupoMateria->id)
+            ->where('hora_inicio', '<', $request->hora_fin)
+            ->where('hora_fin', '>', $request->hora_inicio)
+            ->exists();
+
+        if ($existeChoqueDocente) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('modal_id', $grupoMateria->id)
+                ->with('mensaje', 'El docente seleccionado ya tiene una clase en ese horario.')
                 ->with('icono', 'error');
         }
 

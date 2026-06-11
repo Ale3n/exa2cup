@@ -85,11 +85,13 @@
                             <div class="form-group">
                                 <label>Cédula de Identidad</label><b> (*)</b>
 
-                                <input type="text"
+                                <input type="number"
                                     name="ci"
                                     class="form-control"
                                     value="{{ old('ci') }}"
                                     placeholder="Ingrese CI..."
+                                    min="0"
+                                    step="1"
                                     required>
 
                                 @error('ci')
@@ -139,11 +141,13 @@
                             <div class="form-group">
                                 <label>Teléfono</label><b> (*)</b>
 
-                                <input type="text"
+                                <input type="number"
                                     name="telefono"
                                     class="form-control"
                                     value="{{ old('telefono') }}"
                                     placeholder="Ingrese teléfono..."
+                                    min="0"
+                                    step="1"
                                     required>
 
                                 @error('telefono')

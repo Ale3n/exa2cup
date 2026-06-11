@@ -327,13 +327,13 @@ return [
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
                 ],
-                [
+                /*[
                     'can'     => 'admin.carrera-gestiones.index',
                     'text'    => 'Carrera-Gestiones',
                     'url'     => 'admin/carrera-gestiones',
                     'icon'    => 'fas fa-fw fa-users-cog',
                     'classes' => 'bg-blue text-white',
-                ],
+                ],*/
                 [
                     'can'     => 'admin.aulas.index',
                     'text'    => 'Aulas',
@@ -421,13 +421,14 @@ return [
                     'classes' => 'bg-blue text-white',
                 ],
                 [
+                    'can'     => 'admin.anuncios.index',
                     'text'    => 'Anuncios',
                     'route'   => 'anuncios.create',
                     'icon'    => 'fas fa-fw fa-bullhorn',
                     'classes' => 'bg-blue text-white',
                 ],
                 [
-                    //'can'     => 'admin..index',
+                    'can'     => 'admin.reportes.index',
                     'text'    => 'reportes',
                     'url'     => '/admin/reportes',
                     'icon'    => 'fas fa-fw fa-chart-bar',
